@@ -1,630 +1,339 @@
-import React, { useState, useEffect } from 'react';
-import { Heart, ChevronRight, CheckCircle2, CheckSquare, Star, ShieldCheck, Lock } from 'lucide-react';
-
-export default function App() {
-  const [step, setStep] = useState(0);
-  const [answers, setAnswers] = useState({});
-  const [loadingProgress, setLoadingProgress] = useState(0);
-
-  // Efeito para animar a barra de carregamento final antes da VSL
-  useEffect(() => {
-    if (step === questions.length + 3) {
-      const duration = 4000;
-      const interval = 40;
-      const steps = duration / interval;
-      let currentStep = 0;
-
-      const timer = setInterval(() => {
-        currentStep++;
-        const newProgress = Math.min(100, Math.floor((currentStep / steps) * 100));
-        setLoadingProgress(newProgress);
-
-        if (currentStep >= steps) {
-          clearInterval(timer);
-          setTimeout(() => {
-            setStep(step + 1);
-          }, 300);
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Cerâmica Plástica - Modelando Lucros</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        .animate-in { animation: fadeIn 0.5s ease-out forwards; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-      }, interval);
+        .progress-transition { transition: width 0.5s ease-out; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 selection:bg-yellow-200">
 
-      return () => clearInterval(timer);
-    }
-  }, [step]);
-
-  // Simulação de perguntas adaptadas para Cerâmica Plástica mantendo o layout intacto
-  const questions = [
-    {
-      id: 'experiencia',
-      preTitle: 'Pra começar, me conta uma coisa:',
-      titleBlack: 'Qual seu nível de experiência com\n',
-      titleYellow: 'Cerâmica Plástica?',
-      options: [
-        {
-          emoji: '👩‍🎨',
-          text: 'Já faço algumas peças, mas quero melhorar meus acabamentos'
-        },
-        {
-          emoji: '😅',
-          text: 'Já tentei, mas tive dificuldades (massa quebrou, deu bolha)'
-        },
-        {
-          emoji: '🥰',
-          text: 'Nunca fiz, mas quero começar do zero'
-        }
-      ]
-    },
-    {
-      id: 'treinamento',
-      titleBlack: 'Esse vai ser o seu primeiro\ntreinamento com ',
-      titleYellow: 'Modelagem?',
-      options: [
-        {
-          emoji: '🥰',
-          text: 'Nunca fiz nenhum treinamento, esse será o primeiro'
-        },
-        {
-          emoji: '😅',
-          text: 'Já fiz outro treinamento'
-        },
-        {
-          emoji: '🥳',
-          text: 'Já fiz vários treinamentos'
-        }
-      ]
-    },
-    {
-      id: 'tempo',
-      titleBlack: 'Quanto tempo você tem disponível\npara ',
-      titleYellow: 'aprender',
-      titleBlackSuffix: '?',
-      options: [
-        {
-          emoji: '🕒',
-          text: 'Entre 30 minutos a 1 hora'
-        },
-        {
-          emoji: '🕒',
-          text: 'Entre 3 a 4 horas'
-        },
-        {
-          emoji: '🕒',
-          text: 'Tenho muito tempo livre'
-        }
-      ]
-    },
-    {
-      id: 'objetivo',
-      titleBlack: 'O que você mais deseja conquistar\ncom a ',
-      titleYellow: 'Cerâmica Plástica',
-      titleBlackSuffix: '?',
-      options: [
-        {
-          emoji: '💲',
-          text: 'Minha independência financeira e viver do que eu amo'
-        },
-        {
-          emoji: '🏡',
-          text: 'Contribuir nas contas de casa e garantir mais tranquilidade pra mim e minha família'
-        },
-        {
-          emoji: '💜',
-          text: 'Ter um tempo só meu, pra relaxar e colocar minha criatividade em prática'
-        }
-      ]
-    },
-    {
-      id: 'meta',
-      titleBlack: 'Depois que você aprender as fazer as\npeças de ',
-      titleYellow: 'Cerâmica,',
-      titleBlackSuffix: ' qual será sua\nmeta?',
-      options: [
-        {
-          emoji: '💸',
-          text: 'Aprender como vender e lucrar com os brincos'
-        },
-        {
-          emoji: '🧶',
-          text: 'Fazer apenas como um hobby'
-        },
-        {
-          emoji: '💲',
-          text: 'Melhorar meus resultados no meu negócio atual'
-        }
-      ]
-    },
-    {
-      id: 'estilo',
-      titleBlack: 'Você prefere qual estilo de ',
-      titleYellow: 'Brincos?',
-      hasContinueButton: true,
-      hideChevron: true,
-      allowMultiple: true,
-      options: [
-        { emoji: '🌸', text: 'Florais e Orgânicos' },
-        { emoji: '🔶', text: 'Geométricos e Modernos' },
-        { emoji: '🎨', text: 'Marmorizados e com Texturas' },
-        { emoji: '✨', text: 'Com acabamento em Resina' },
-        { emoji: '🌿', text: 'Minimalistas e Elegantes' },
-        { emoji: '😍', text: 'Todos os estilos' }
-      ]
-    }
-  ];
-
-  const handleAnswer = (questionId, answerText, autoAdvance = true, allowMultiple = false) => {
-    if (allowMultiple) {
-      setAnswers(prev => {
-        const currentSelections = prev[questionId] || [];
-        let newSelections;
-        if (currentSelections.includes(answerText)) {
-          newSelections = currentSelections.filter(item => item !== answerText);
-        } else {
-          newSelections = [...currentSelections, answerText];
-        }
-        return { ...prev, [questionId]: newSelections };
-      });
-    } else {
-      setAnswers({ ...answers, [questionId]: answerText });
-      if (autoAdvance) {
-        setTimeout(() => {
-          setStep(step + 1);
-        }, 300);
-      }
-    }
-  };
-
-  // Renderiza a página de introdução
-  const renderIntro = () => (
-    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 font-['Inter',sans-serif]">
-      <div className="text-center px-4 pt-10 pb-6">
-        <h1 className="text-[22px] md:text-3xl font-black text-gray-900 leading-tight tracking-tight font-['Montserrat',sans-serif] uppercase">
-          A NOVA TENDÊNCIA DE 2026:
-          <br />
-          <span className="inline-block bg-[#FFD700] text-white px-2 py-0.5 mt-1 rounded-sm">
-            CERÂMICA PLÁSTICA
-          </span>
-        </h1>
-      </div>
-
-      <div className="px-6 text-center text-[#222222] space-y-5 text-[16px] leading-[1.6]">
-        <p>
-          Me chamo <strong>Luana Oliveira</strong>, e desde 2017 vivo 100% do
-          artesanato com <strong className="text-[#FACC15]">Cerâmica Plástica</strong>. Um tipo de modelagem que
-          conquistou o coração (e o bolso!) de milhares de mulheres.
-        </p>
-        <p>
-          Criei um jeito <strong>simples</strong> e <strong>lucrativo</strong> pra você começar do
-          zero a faturar mais de <strong className="text-[#16a34a]">R$3.000,00</strong> por mês fazendo peças
-          lindas como <strong>brincos e acessórios</strong>, mesmo que nunca tenha feito nada
-          parecido antes.
-        </p>
-      </div>
-
-      <div className="mt-8 px-4">
-        <img 
-          src="/images/intro-brincos.jpg" 
-          alt="Modelos de Brincos em Cerâmica Plástica" 
-          className="w-full aspect-[4/5] object-cover rounded-2xl border border-gray-100 shadow-sm"
-        />
-      </div>
-
-      <div className="px-6 mt-8 text-center text-[#222222] text-[16px] leading-[1.6] flex flex-col items-center gap-2">
-         <p>
-          <span className="text-sky-400 text-xl align-middle mr-1">💙</span> 
-          Já são mais de <strong>5 mil</strong> alunas transformando criatividade
-          em <strong className="text-[#16a34a]">renda extra</strong> e trabalhando de casa, no seu próprio ritmo.
-        </p>
-      </div>
-
-      <div className="mt-6 px-4">
-        <img 
-          src="/images/intro-processo.jpg" 
-          alt="Processo de modelagem de brincos" 
-          className="w-full aspect-square object-cover rounded-2xl border border-gray-100 shadow-sm"
-        />
-      </div>
-
-      <div className="px-8 mt-8 mb-10 text-center text-[#222222] text-[16px] leading-[1.6] space-y-5">
-        <p>
-          E o melhor? Eu vou te ensinar o <strong>passo a passo</strong> pra você
-          também viver disso. Sem precisar investir muito ou
-          depender dos outros.
-        </p>
-        <p>
-          Clica no botão abaixo e responda o questionário!
-        </p>
-
-        <button 
-          onClick={() => setStep(1)}
-          className="w-full bg-[#fcd34d] hover:bg-[#fbbf24] text-black font-medium text-[17px] py-4 px-6 rounded-xl shadow-[0_4px_0_0_#d97706] active:shadow-[0_0px_0_0_#d97706] active:translate-y-[4px] transition-all duration-150 mt-4"
-        >
-          Continuar!
-        </button>
-      </div>
-    </div>
-  );
-
-  // Renderiza as perguntas do quiz
-  const renderQuestion = () => {
-    const qIndex = step - 1;
-    const currentQ = questions[qIndex];
-
-    if (!currentQ) return null;
-
-    return (
-      <div className="animate-in fade-in slide-in-from-right-8 duration-300 px-6 py-12 flex flex-col justify-center min-h-[70vh]">
-        
-        <div className="text-center mb-10 font-['Inter',sans-serif]">
-          {currentQ.preTitle && (
-            <h3 className="text-[17px] font-black text-[#111111] mb-0.5 tracking-tight">
-              {currentQ.preTitle}
-            </h3>
-          )}
-          <h2 className="text-[25px] font-black text-[#111111] leading-[1.15] tracking-tight whitespace-pre-line">
-            {currentQ.titleBlack}
-            <span className="text-[#ffda00]">{currentQ.titleYellow}</span>
-            {currentQ.titleBlackSuffix && <span>{currentQ.titleBlackSuffix}</span>}
-          </h2>
-        </div>
-        
-        <div className="space-y-4">
-          {currentQ.options.map((option, idx) => {
-            const isSelected = currentQ.allowMultiple
-              ? (answers[currentQ.id] || []).includes(option.text)
-              : answers[currentQ.id] === option.text;
+    <div id="app" class="min-h-screen flex justify-center">
+        <!-- Container Principal -->
+        <div class="w-full max-w-5xl bg-white relative overflow-hidden flex flex-col shadow-2xl min-h-screen">
             
-            return (
-              <button
-                key={idx}
-                onClick={() => handleAnswer(currentQ.id, option.text, !currentQ.hasContinueButton, currentQ.allowMultiple)}
-                className={`w-full text-left bg-[#fffdf0] border-[1.5px] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98] ${
-                  isSelected 
-                    ? 'border-[#facc15] bg-[#fef9c3] ring-2 ring-[#facc15]/30' 
-                    : 'border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3]'
-                }`}
-              >
-                <span className="text-3xl shrink-0">{option.emoji}</span>
-                
-                {!currentQ.hideChevron && (
-                  <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow">
-                    <ChevronRight className="w-4 h-4 text-[#facc15]" />
-                  </div>
-                )}
-
-                <span className={`font-medium text-[15px] leading-tight ${isSelected ? 'text-black' : 'text-[#222222] group-hover:text-black'}`}>
-                  {option.text}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
-        <div className="mt-8 text-center">
-          <p className="text-[13px] text-gray-600 font-medium">
-            Personalizamos o seu pacote de acordo com suas respostas.
-          </p>
-        </div>
-
-        {currentQ.hasContinueButton && (() => {
-          const hasAnswer = currentQ.allowMultiple 
-            ? answers[currentQ.id] && answers[currentQ.id].length > 0 
-            : !!answers[currentQ.id];
-
-          return (
-            <button 
-              onClick={() => {
-                if(hasAnswer) setStep(step + 1);
-              }}
-              disabled={!hasAnswer}
-              className={`w-full font-medium text-[17px] py-4 px-6 rounded-xl transition-all duration-150 mt-6 ${
-                hasAnswer
-                  ? 'bg-[#fcd34d] hover:bg-[#fbbf24] text-black shadow-[0_4px_0_0_#d97706] active:shadow-[0_0px_0_0_#d97706] active:translate-y-[4px]'
-                  : 'bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed opacity-80'
-              }`}
-            >
-              Continuar
-            </button>
-          );
-        })()}
-      </div>
-    );
-  };
-
-  // Renderiza a página de quebra de objeções (Adaptado para Cerâmica)
-  const renderBridge = () => (
-    <div className="animate-in fade-in slide-in-from-right-8 duration-300 px-6 py-10 flex flex-col justify-center font-['Inter',sans-serif]">
-      
-      <h2 className="text-[24px] font-black text-[#111111] leading-[1.15] tracking-tight text-center mb-6 font-['Montserrat',sans-serif]">
-        Precisa de forno especial ou <span className="text-[#ffda00]">ferramentas caras?</span>
-      </h2>
-      
-      <div className="text-[15.5px] text-[#222222] text-center leading-[1.5] space-y-4">
-        <p>
-          <strong>Não!</strong> A grande vantagem desse método é que a massa <strong>seca ao ar livre</strong>. Você não precisa de forno, nem de equipamentos complexos.
-        </p>
-        <p>
-          O método que eu ensino é simples. Com ferramentas básicas ou coisas que você já tem em casa, você consegue criar peças lindas com acabamento profissional na mesa da sua sala.
-        </p>
-      </div>
-
-      <div className="mt-6 mb-12">
-        <img 
-          src="/images/ferramentas.jpg" 
-          alt="Ferramentas simples e secagem ao ar livre" 
-          className="w-full aspect-[4/5] object-cover rounded-2xl border border-gray-100 shadow-sm"
-        />
-      </div>
-
-      <h2 className="text-[24px] font-black text-[#111111] leading-[1.15] tracking-tight text-center mb-6 font-['Montserrat',sans-serif]">
-        O <span className="text-[#ffda00]">material</span> é caro?
-      </h2>
-
-      <div className="text-[15.5px] text-[#222222] text-center leading-[1.5]">
-        <p>
-          <strong>Nem um pouco!</strong> Um bloquinho de massa custa em média R$ 12,00. E com esse único bloco você consegue fazer vários pares de brincos! Você investe centavos por peça e consegue vender cada uma por <strong>R$ 35 a R$ 60</strong>.
-        </p>
-      </div>
-
-      <div className="mt-6 mb-8">
-        <img 
-          src="/images/blocos-massa.jpg" 
-          alt="Blocos de massa de cerâmica plástica" 
-          className="w-full aspect-[16/9] object-cover rounded-2xl border border-gray-100 shadow-sm"
-        />
-      </div>
-
-      <button 
-        onClick={() => setStep(step + 1)}
-        className="w-full bg-[#fcd34d] hover:bg-[#fbbf24] text-black font-medium text-[17px] py-4 px-6 rounded-xl shadow-[0_4px_0_0_#d97706] active:shadow-[0_0px_0_0_#d97706] active:translate-y-[4px] transition-all duration-150"
-      >
-        Continuar
-      </button>
-
-    </div>
-  );
-
-  const renderTestimonials = () => (
-    <div className="animate-in fade-in slide-in-from-right-8 duration-300 px-6 py-10 flex flex-col justify-center font-['Inter',sans-serif] min-h-[80vh]">
-      
-      <h2 className="text-[23px] font-black text-[#111111] leading-[1.2] tracking-tight text-center mb-8 font-['Montserrat',sans-serif]">
-        Olha o que minhas alunas estão<br/>
-        dizendo sobre o treinamento<br/>
-        <span className="inline-block bg-[#FFD700] text-white px-2 py-0.5 mt-1 rounded-sm uppercase tracking-normal">
-          Modelando Lucros!
-        </span>
-      </h2>
-
-      <div className="mt-2 mb-10">
-        <img 
-          src="/images/prints-alunas.jpg" 
-          alt="Prints de resultados das alunas no WhatsApp" 
-          className="w-full aspect-[4/5] object-cover rounded-2xl border border-gray-100 shadow-sm"
-        />
-      </div>
-
-      <button 
-        onClick={() => setStep(step + 1)}
-        className="w-full bg-[#fcd34d] hover:bg-[#fbbf24] text-black font-medium text-[17px] py-4 px-6 rounded-xl shadow-[0_4px_0_0_#d97706] active:shadow-[0_0px_0_0_#d97706] active:translate-y-[4px] transition-all duration-150"
-      >
-        Quero aprender!
-      </button>
-
-    </div>
-  );
-
-  const renderLoading = () => (
-    <div className="animate-in fade-in zoom-in duration-500 px-6 py-16 flex flex-col justify-center min-h-[70vh] font-['Inter',sans-serif]">
-      
-      <div className="text-center mb-12">
-        <h2 className="text-[26px] md:text-[28px] font-black text-[#111111] leading-[1.2] tracking-tight font-['Montserrat',sans-serif]">
-          Você está a poucos passos de iniciar<br/>
-          uma <span className="text-[#facc15]">GRANDE</span> <span className="bg-[#facc15] text-white px-1.5 pb-0.5 rounded-sm inline-block">mudança</span>!
-        </h2>
-      </div>
-
-      <div className="w-full max-w-sm mx-auto mb-6">
-        <div className="flex justify-between items-end mb-2 px-1">
-          <span className="text-[#facc15] font-bold text-[15px]">
-            Preparando seu treinamento
-          </span>
-          <span className="text-[#facc15] font-bold text-[16px]">
-            {loadingProgress}%
-          </span>
-        </div>
-        
-        <div className="w-full h-3.5 bg-[#fef9c3] rounded-full overflow-hidden shadow-inner">
-          <div 
-            className="h-full bg-[#facc15] transition-all duration-75 ease-linear rounded-full"
-            style={{ width: `${loadingProgress}%` }}
-          />
-        </div>
-      </div>
-
-      <p className="text-center text-[13px] font-bold text-[#111111]">
-        Carregando um treinamento exclusivo pra você
-      </p>
-
-    </div>
-  );
-
-  // Renderiza a Página de Vendas Final (Pitch adaptado para Cerâmica Plástica)
-  const renderPitch = () => {
-    const benefits = [
-      "Acesso vitalício, assista sempre que quiser",
-      "Condicionamento correto: O segredo para a massa não rachar após a secagem",
-      "Criação de texturas, efeito marmorizado, listras e padrões orgânicos",
-      "O tempo e a técnica EXATA de secagem natural sem deformar a peça",
-      "Lixamento e polimento para um acabamento liso e impecável",
-      "Aplicação de resina UV para um brilho vitrificado de joia",
-      "Montagem profissional das ferragens (argolas, pinos, bases de brinco)",
-      "Como calcular o preço ideal de cada peça para lucrar até 500% em cima",
-      "Como vender nas redes sociais e atrair suas primeiras clientes",
-      "Método para faturar até R$ 3.000 por mês com suas peças exclusivas",
-      "Lista completa de fornecedores testados para comprar massa e ferragens"
-    ];
-
-    const PricingBlock = ({ hideBadges = false }) => (
-      <div className="flex flex-col mt-8 mb-6">
-        <div className="bg-[#d1f5e0] rounded-t-xl rounded-b-sm p-5 flex items-center justify-between border-t border-x border-[#bbf7d0]">
-          <span className="text-[#16a34a] font-black text-[17px] w-1/2 leading-tight">Curso Modelando Lucros</span>
-          <div className="text-right">
-            <p className="text-green-600/80 text-[10px] font-bold mb-0.5 line-through">DE R$ 97,00</p>
-            <p className="text-[#16a34a] font-black text-[26px] leading-none mb-1">R$ 37,00</p>
-            <p className="text-[#16a34a] text-[11px] font-bold">Pagamento Único</p>
-          </div>
-        </div>
-        
-        <button 
-          onClick={() => alert('Insira aqui o link de Checkout da Hotmart/Kiwify!')} 
-          className="w-full bg-[#facc15] hover:bg-[#eab308] text-[#111111] font-bold text-[17px] py-5 px-6 rounded-b-xl shadow-[0_4px_0_0_#ca8a04] active:shadow-[0_0px_0_0_#ca8a04] active:translate-y-[4px] transition-all duration-150 z-10"
-        >
-          Clique aqui e garanta o treinamento!
-        </button>
-        
-        {!hideBadges && (
-          <div className="flex flex-col items-center gap-5 mt-8 mb-2">
-            <div className="flex items-center gap-4">
-              <ShieldCheck className="w-14 h-14 text-[#eab308] shrink-0" />
-              <div>
-                <p className="font-black text-[#111111] text-[15px] leading-tight">7 DIAS DE GARANTIA</p>
-                <p className="font-black text-[#111111] text-[15px] leading-tight mb-1">TESTE SEM MEDO</p>
-                <p className="text-gray-500 text-[9px] font-bold">DEVOLVEMOS O VALOR NO PIX OU CARTÃO DE CRÉDITO.</p>
-              </div>
+            <!-- Barra de Progresso Superior -->
+            <div id="progress-container" class="w-[90%] max-w-2xl mx-auto mt-8 h-2 bg-[#fef08a] rounded-full relative z-10 overflow-hidden">
+                <div id="progress-bar" class="h-full bg-[#eab308] progress-transition" style="width: 10%;"></div>
             </div>
-            <div className="flex items-center gap-2 text-gray-400 text-xs font-bold mt-2">
-              <Lock className="w-4 h-4 text-green-600" />
-              <span className="text-green-600 text-sm tracking-wide">COMPRA 100% SEGURA</span>
+
+            <!-- Área de Conteúdo -->
+            <div id="content" class="flex-1 overflow-y-auto pb-16 pt-4 scroll-smooth">
+                <!-- Conteúdo injetado via JavaScript -->
             </div>
-          </div>
-        )}
-      </div>
-    );
-
-    return (
-      <div className="animate-in fade-in slide-in-from-bottom-8 duration-700 px-5 py-8 flex flex-col font-['Inter',sans-serif]">
-        
-        <div className="bg-[#e6f4ea] p-5 rounded-2xl text-center mb-8 border border-[#cce8d6]">
-          <h3 className="text-[#16a34a] font-black text-[19px] mb-2">Parabéns!</h3>
-          <p className="text-[#111111] font-bold text-[15px] leading-tight">
-            Você foi qualificada para participar do<br/>treinamento MODELANDO LUCROS!
-          </p>
         </div>
-
-        <h2 className="text-[22px] font-black text-[#111111] leading-[1.2] tracking-tight text-center mb-8 font-['Montserrat',sans-serif]">
-          Olha tudo o que você vai aprender no<br/>
-          treinamento <span className="bg-[#facc15] text-white px-1.5 pb-0.5 rounded-sm inline-block">Modelando Lucros</span>!
-        </h2>
-
-        <div className="space-y-4 mb-10">
-          {benefits.map((text, i) => (
-            <div key={i} className="flex gap-3 items-start">
-              <CheckSquare className="w-6 h-6 text-[#16a34a] shrink-0 bg-white" fill="#16a34a" color="white" />
-              <p className="text-[14.5px] text-[#222222] leading-[1.4]" dangerouslySetInnerHTML={{
-                __html: text.replace(/((Acesso vitalício)|(Condicionamento correto)|(Criação de texturas)|(técnica EXATA de secagem natural)|(Lixamento e polimento)|(resina UV)|(Montagem profissional)|(lucrar até 500%)|(vender nas redes sociais)|(R\$ 3\.000 por mês)|(fornecedores testados))/g, '<strong>$1</strong>')
-              }} />
-            </div>
-          ))}
-        </div>
-
-        <div className="mb-10 text-center">
-          <h3 className="text-[#eab308] font-black text-[18px] mb-6 font-['Montserrat',sans-serif] px-4">
-            🎁 Ganhe BÔNUS grátis se garantir sua vaga AGORA:
-          </h3>
-          
-          <div className="space-y-4 text-left text-[14.5px] text-[#222222] leading-[1.5]">
-            <p><span className="bg-[#fef08a] text-yellow-800 font-bold px-1 rounded mr-1">Bônus 1:</span> Como montar seu perfil no Instagram para vender brincos.</p>
-            <p><span className="bg-[#fef08a] text-yellow-800 font-bold px-1 rounded mr-1">Bônus 2:</span> <strong>Acesso vitalício</strong> ao treinamento pra você ver quando quiser no seu ritmo.</p>
-            <p><span className="bg-[#fef08a] text-yellow-800 font-bold px-1 rounded mr-1">Bônus 3:</span> <strong>Como tirar fotos que vendem</strong> usando apenas o seu celular.</p>
-            <p><span className="bg-[#fef08a] text-yellow-800 font-bold px-1 rounded mr-1">Bônus 4:</span> <strong>Planilha de precificação</strong> automática!</p>
-          </div>
-        </div>
-
-        {/* Scarcity */}
-        <div className="bg-[#ffe4e6] text-[#be123c] font-bold text-center py-3.5 rounded-xl text-[14px] shadow-sm mb-12">
-          <span className="text-[#9f1239]">Corra!</span> Falta apenas 17 vagas disponíveis
-        </div>
-
-        <h2 className="text-[22px] font-black text-[#111111] leading-[1.2] tracking-tight text-center mb-6 font-['Montserrat',sans-serif]">
-          Alguns dos <span className="text-[#eab308]">vários modelos</span> que você<br/>vai aprender comigo:
-        </h2>
-        
-        <img 
-          src="/images/galeria-modelos.jpg" 
-          alt="Galeria de modelos de brincos ensinados" 
-          className="w-full aspect-[4/5] object-cover rounded-2xl border border-gray-100 shadow-sm mb-4"
-        />
-
-        <PricingBlock hideBadges={true} />
-
-        <img 
-          src="/images/foto-autora.jpg" 
-          alt="Luana Oliveira - Criadora do Método" 
-          className="w-full aspect-square object-cover rounded-2xl border border-gray-100 shadow-sm mb-8 mt-2"
-        />
-
-        <h2 className="text-[20px] font-black text-[#111111] leading-[1.2] tracking-tight text-center mb-6 font-['Montserrat',sans-serif]">
-          Luana Oliveira
-        </h2>
-        <div className="text-[15px] text-[#222222] text-center leading-[1.5] space-y-4 mb-12">
-          <p>Criadora do treinamento <strong>Modelando Lucros</strong> e apaixonada por modelagem desde 2017.</p>
-          <p>Minha história começou de forma simples: eu precisava de uma renda extra que não exigisse maquinário pesado ou um ateliê fora de casa. Foi aí que conheci esse material incrível, que permite criar peças profissionais secando naturalmente, sem precisar de forno ou grandes investimentos.</p>
-          <p>Me especializei em técnicas de marmorizado, lixamento, aplicação de resina e estratégias de vendas, e hoje vivo daquilo que amo: criar <strong>brincos e acessórios femininos</strong> que são verdadeiras joias artesanais.</p>
-          <p>Hoje ensino mais de 5 mil alunas a terem sua independência financeira. Quero te mostrar que você também pode transformar sua paixão em <strong>uma fonte de renda lucrativa!</strong></p>
-        </div>
-
-        <h2 className="text-[22px] font-black text-[#111111] leading-[1.2] tracking-tight text-center mb-8 font-['Montserrat',sans-serif]">
-          Veja o que as alunas da turma 1 estão<br/>falando do treinamento:
-        </h2>
-        <div className="space-y-4 mb-8">
-          {[
-            { name: "Maria Garcia", user: "@mariaagnc1", text: "Eu não tinha dom nenhum, mas com o método consegui fazer meu primeiro par de brincos no primeiro dia!" },
-            { name: "Camila Ferreira", user: "@camilaa2ferrer", text: "Já fiz minha primeira venda! A técnica da resina deixa a peça parecendo uma joia cara, amei muito." },
-            { name: "Maressa Ribeiro", user: "@maressibeiro", text: "Gente, fiquei encantada com o curso, achei que a massa ia rachar na secagem mas a Luana ensina certinho o ponto e o tempo." }
-          ].map((review, i) => (
-            <div key={i} className="border border-gray-200 rounded-2xl p-5 shadow-sm bg-white">
-              <div className="flex gap-1 mb-2">
-                {[1,2,3,4,5].map(s => <Star key={s} className="w-4 h-4 text-[#eab308]" fill="#eab308" />)}
-              </div>
-              <h4 className="font-bold text-[#eab308] text-[16px] leading-tight">{review.name}</h4>
-              <p className="text-gray-500 text-[12px] mb-3">{review.user}</p>
-              <p className="text-[#222222] text-[14.5px] leading-[1.4]">{review.text}</p>
-            </div>
-          ))}
-        </div>
-
-        <PricingBlock />
-        
-      </div>
-    );
-  };
-
-  const progress = step === 0 ? 10 : Math.min(100, ((step) / (questions.length + 3)) * 100);
-
-  return (
-    <div className="min-h-screen bg-white font-sans text-gray-900 selection:bg-yellow-200">
-      <style dangerouslySetInnerHTML={{__html: `
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800;900&display=swap');
-      `}} />
-      <div className="max-w-[480px] mx-auto min-h-screen bg-white relative overflow-hidden flex flex-col">
-        
-        {step < questions.length + 3 && (
-          <div className="w-[90%] mx-auto mt-6 h-1.5 bg-[#fef08a] rounded-full relative z-10 overflow-hidden transition-opacity duration-300">
-            <div 
-              className="h-full bg-[#eab308] transition-all duration-500 ease-out rounded-full"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-        )}
-
-        <div className="flex-1 overflow-y-auto pb-12 pt-2 scroll-smooth">
-          {step === 0 && renderIntro()}
-          {step > 0 && step <= questions.length && renderQuestion()}
-          {step === questions.length + 1 && renderBridge()}
-          {step === questions.length + 2 && renderTestimonials()}
-          {step === questions.length + 3 && renderLoading()}
-          {step === questions.length + 4 && renderPitch()}
-        </div>
-        
-      </div>
     </div>
-  );
-}
+
+    <script>
+        // Estado da Aplicação
+        const state = {
+            step: 0,
+            answers: {},
+            loadingProgress: 0,
+            questions: [
+                {
+                    id: 'experiencia',
+                    preTitle: 'Pra começar, me conta uma coisa:',
+                    titleBlack: 'Qual seu nível de experiência com\n',
+                    titleYellow: 'Cerâmica Plástica?',
+                    options: [
+                        { emoji: '👩‍🎨', text: 'Já faço algumas peças, mas quero melhorar meus acabamentos' },
+                        { emoji: '😅', text: 'Já tentei, mas tive dificuldades (massa quebrou, deu bolha)' },
+                        { emoji: '🥰', text: 'Nunca fiz, mas quero começar do zero' }
+                    ]
+                },
+                {
+                    id: 'treinamento',
+                    titleBlack: 'Esse vai ser o seu primeiro\ntreinamento com ',
+                    titleYellow: 'Modelagem?',
+                    options: [
+                        { emoji: '🥰', text: 'Nunca fiz nenhum treinamento, esse será o primeiro' },
+                        { emoji: '😅', text: 'Já fiz outro treinamento' },
+                        { emoji: '🥳', text: 'Já fiz vários treinamentos' }
+                    ]
+                },
+                {
+                    id: 'tempo',
+                    titleBlack: 'Quanto tempo você tem disponível\npara ',
+                    titleYellow: 'aprender',
+                    titleBlackSuffix: '?',
+                    options: [
+                        { emoji: '🕒', text: 'Entre 30 minutos a 1 hora' },
+                        { emoji: '🕒', text: 'Entre 3 a 4 horas' },
+                        { emoji: '🕒', text: 'Tenho muito tempo livre' }
+                    ]
+                },
+                {
+                    id: 'objetivo',
+                    titleBlack: 'O que você mais deseja conquistar\ncom a ',
+                    titleYellow: 'Cerâmica Plástica',
+                    titleBlackSuffix: '?',
+                    options: [
+                        { emoji: '💲', text: 'Minha independência financeira e viver do que eu amo' },
+                        { emoji: '🏡', text: 'Contribuir nas contas de casa e garantir mais tranquilidade pra mim e minha família' },
+                        { emoji: '💜', text: 'Ter um tempo só meu, pra relaxar e colocar minha criatividade em prática' }
+                    ]
+                },
+                {
+                    id: 'meta',
+                    titleBlack: 'Depois que você aprender as fazer as\npeças de ',
+                    titleYellow: 'Cerâmica,',
+                    titleBlackSuffix: ' qual será sua\nmeta?',
+                    options: [
+                        { emoji: '💸', text: 'Aprender como vender e lucrar com os brincos' },
+                        { emoji: '🧶', text: 'Fazer apenas como um hobby' },
+                        { emoji: '💲', text: 'Melhorar meus resultados no meu negócio atual' }
+                    ]
+                },
+                {
+                    id: 'estilo',
+                    titleBlack: 'Você prefere qual estilo de ',
+                    titleYellow: 'Brincos?',
+                    hasContinueButton: true,
+                    hideChevron: true,
+                    allowMultiple: true,
+                    options: [
+                        { emoji: '🌸', text: 'Florais e Orgânicos' },
+                        { emoji: '🔶', text: 'Geométricos e Modernos' },
+                        { emoji: '🎨', text: 'Marmorizados e com Texturas' },
+                        { emoji: '✨', text: 'Com acabamento em Resina' },
+                        { emoji: '🌿', text: 'Minimalistas e Elegantes' },
+                        { emoji: '😍', text: 'Todos os estilos' }
+                    ]
+                }
+            ]
+        };
+
+        const contentEl = document.getElementById('content');
+        const progressBar = document.getElementById('progress-bar');
+        const progressContainer = document.getElementById('progress-container');
+
+        function updateProgress() {
+            const totalSteps = state.questions.length + 3;
+            const percentage = state.step === 0 ? 10 : Math.min(100, (state.step / totalSteps) * 100);
+            progressBar.style.width = `${percentage}%`;
+            
+            if (state.step >= state.questions.length + 3) {
+                progressContainer.style.opacity = '0';
+            } else {
+                progressContainer.style.opacity = '1';
+            }
+        }
+
+        function setStep(newStep) {
+            state.step = newStep;
+            render();
+            updateProgress();
+            window.scrollTo(0, 0);
+        }
+
+        function handleAnswer(questionId, answerText, autoAdvance, allowMultiple) {
+            if (allowMultiple) {
+                if (!state.answers[questionId]) state.answers[questionId] = [];
+                const idx = state.answers[questionId].indexOf(answerText);
+                if (idx > -1) {
+                    state.answers[questionId].splice(idx, 1);
+                } else {
+                    state.answers[questionId].push(answerText);
+                }
+                render();
+            } else {
+                state.answers[questionId] = answerText;
+                render();
+                if (autoAdvance) {
+                    setTimeout(() => setStep(state.step + 1), 300);
+                }
+            }
+        }
+
+        function render() {
+            if (state.step === 0) renderIntro();
+            else if (state.step <= state.questions.length) renderQuestion();
+            else if (state.step === state.questions.length + 1) renderBridge();
+            else if (state.step === state.questions.length + 2) renderTestimonials();
+            else if (state.step === state.questions.length + 3) renderLoading();
+            else renderPitch();
+            
+            lucide.createIcons();
+        }
+
+        function renderIntro() {
+            contentEl.innerHTML = `
+                <div class="animate-in max-w-4xl mx-auto w-full">
+                    <div class="text-center px-4 pt-10 pb-6 md:pt-16 md:pb-10">
+                        <h1 class="text-[24px] md:text-[40px] font-black text-gray-900 leading-tight tracking-tight font-montserrat uppercase">
+                            A NOVA TENDÊNCIA DE 2026:<br />
+                            <span class="inline-block bg-[#FFD700] text-white px-3 py-1 mt-2 rounded-sm md:mt-4">CERÂMICA PLÁSTICA</span>
+                        </h1>
+                    </div>
+                    <div class="max-w-2xl mx-auto px-6 text-center text-[#222222] space-y-5 text-[16px] md:text-[18px] leading-[1.6]">
+                        <p>Me chamo <strong>Luana Oliveira</strong>, e desde 2017 vivo 100% do artesanato com <strong class="text-[#FACC15]">Cerâmica Plástica</strong>.</p>
+                        <p>Criei um jeito <strong>simples</strong> e <strong>lucrativo</strong> pra você começar do zero a faturar mais de <strong class="text-[#16a34a]">R$3.000,00</strong> por mês fazendo peças lindas como <strong>brincos e acessórios</strong>.</p>
+                    </div>
+                    <div class="max-w-md mx-auto mt-10 px-4 md:max-w-lg">
+                        <img src="/images/intro-brincos.webp" alt="[Imagem de Brincos]" class="w-full aspect-[4/5] object-cover rounded-2xl border border-gray-100 shadow-md">
+                    </div>
+                    <div class="max-w-md mx-auto mt-8 px-4 md:max-w-lg">
+                        <img src="/images/intro-processo.webp" alt="[Imagem de Processo]" class="w-full aspect-square object-cover rounded-2xl border border-gray-100 shadow-md">
+                    </div>
+                    <div class="max-w-2xl mx-auto px-6 mt-12 mb-16 text-center">
+                        <button onclick="setStep(1)" class="w-full max-w-sm bg-[#fcd34d] hover:bg-[#fbbf24] text-black font-medium text-[18px] md:text-[20px] py-4 px-6 rounded-xl shadow-[0_4px_0_0_#d97706] active:translate-y-[4px] active:shadow-none transition-all">
+                            Continuar!
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderQuestion() {
+            const q = state.questions[state.step - 1];
+            const isMultiple = q.allowMultiple;
+            const currentAnswer = state.answers[q.id] || (isMultiple ? [] : '');
+
+            let optionsHtml = q.options.map(opt => {
+                const isSelected = isMultiple ? currentAnswer.includes(opt.text) : currentAnswer === opt.text;
+                return `
+                    <button onclick="handleAnswer('${q.id}', '${opt.text}', ${!q.hasContinueButton}, ${isMultiple})" 
+                        class="w-full text-left bg-[#fffdf0] border-[1.5px] p-4 rounded-2xl flex items-center gap-4 transition-all ${isSelected ? 'border-[#facc15] bg-[#fef9c3]' : 'border-[#fde047]'}">
+                        <span class="text-3xl shrink-0">${opt.emoji}</span>
+                        <span class="font-medium text-[15px]">${opt.text}</span>
+                    </button>
+                `;
+            }).join('');
+
+            contentEl.innerHTML = `
+                <div class="max-w-3xl mx-auto w-full animate-in px-6 py-12 md:py-20 flex flex-col justify-center min-h-[70vh]">
+                    <div class="text-center mb-10 md:mb-14">
+                        <h2 class="text-[25px] md:text-[36px] font-black text-[#111111] leading-[1.2] tracking-tight whitespace-pre-line font-montserrat">
+                            ${q.titleBlack}<span class="text-[#ffda00]">${q.titleYellow}</span>
+                        </h2>
+                    </div>
+                    <div class="max-w-xl mx-auto w-full space-y-4">${optionsHtml}</div>
+                    ${q.hasContinueButton ? `
+                        <div class="max-w-sm mx-auto w-full mt-8">
+                            <button onclick="if(state.answers['${q.id}']?.length > 0) setStep(state.step + 1)" class="w-full bg-[#fcd34d] text-black font-medium py-4 rounded-xl shadow-[0_4px_0_0_#d97706] active:translate-y-[4px] active:shadow-none transition-all">Continuar</button>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        function renderBridge() {
+            contentEl.innerHTML = `
+                <div class="max-w-3xl mx-auto w-full animate-in px-6 py-12 md:py-20 flex flex-col justify-center">
+                    <h2 class="text-[24px] md:text-[36px] font-black text-center mb-8 font-montserrat">
+                        Precisa de forno especial ou <span class="text-[#ffda00]">ferramentas caras?</span>
+                    </h2>
+                    <div class="max-w-md mx-auto w-full mb-10">
+                        <img src="/images/ferramentas.webp" alt="[Imagem de Ferramentas]" class="w-full aspect-[4/5] object-cover rounded-2xl shadow-md">
+                    </div>
+                    <button onclick="setStep(state.step + 1)" class="max-w-sm mx-auto w-full bg-[#fcd34d] text-black font-medium py-4 rounded-xl shadow-[0_4px_0_0_#d97706] active:translate-y-[4px] active:shadow-none transition-all">Continuar</button>
+                </div>
+            `;
+        }
+
+        function renderTestimonials() {
+            contentEl.innerHTML = `
+                <div class="max-w-4xl mx-auto w-full animate-in px-6 py-12 md:py-20 flex flex-col justify-center">
+                    <h2 class="text-[23px] md:text-[38px] font-black text-center mb-10 font-montserrat">
+                        Olha o que minhas alunas estão<br/>dizendo sobre o treinamento<br/>
+                        <span class="inline-block bg-[#FFD700] text-white px-3 py-1 mt-2 rounded-sm uppercase">Modelando Lucros!</span>
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto w-full mb-14">
+                        <img src="/images/prints-alunas.webp" alt="[Imagem de Print 1]" class="w-full object-cover rounded-2xl shadow-md border border-gray-100">
+                        <img src="/images/prints-alunas2.webp" alt="[Imagem de Print 2]" class="w-full object-cover rounded-2xl shadow-md border border-gray-100">
+                    </div>
+                    <button onclick="setStep(state.step + 1)" class="max-w-sm mx-auto w-full bg-[#fcd34d] text-black font-medium py-4 rounded-xl shadow-[0_4px_0_0_#d97706] active:translate-y-[4px] active:shadow-none transition-all">Quero aprender!</button>
+                </div>
+            `;
+        }
+
+        function renderLoading() {
+            contentEl.innerHTML = `
+                <div class="max-w-3xl mx-auto w-full animate-in px-6 py-16 flex flex-col justify-center min-h-[70vh]">
+                    <h2 class="text-[26px] md:text-[42px] font-black text-center mb-14 font-montserrat">
+                        Você está a poucos passos de iniciar<br/>uma <span class="text-[#facc15]">GRANDE</span> <span class="bg-[#facc15] text-white px-2 rounded-sm inline-block">mudança</span>!
+                    </h2>
+                    <div class="w-full max-w-md mx-auto mb-8">
+                        <div class="flex justify-between mb-3">
+                            <span class="text-[#facc15] font-bold text-[18px]">Preparando seu treinamento</span>
+                            <span id="loading-text" class="text-[#facc15] font-black text-[20px]">0%</span>
+                        </div>
+                        <div class="w-full h-4 bg-[#fef9c3] rounded-full overflow-hidden">
+                            <div id="loading-bar" class="h-full bg-[#facc15] transition-all duration-75 ease-linear" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            let progress = 0;
+            const bar = document.getElementById('loading-bar');
+            const text = document.getElementById('loading-text');
+            const interval = setInterval(() => {
+                progress += 2;
+                if (bar) bar.style.width = progress + '%';
+                if (text) text.innerText = progress + '%';
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => setStep(state.step + 1), 500);
+                }
+            }, 80);
+        }
+
+        function renderPitch() {
+            const pricing = `
+                <div class="flex flex-col mt-10 mb-8 max-w-lg mx-auto w-full">
+                    <div class="bg-[#d1f5e0] rounded-t-xl p-6 flex items-center justify-between border-t border-x border-[#bbf7d0]">
+                        <span class="text-[#16a34a] font-black text-[22px]">Curso Modelando Lucros</span>
+                        <div class="text-right">
+                            <p class="text-[#16a34a] font-black text-[40px] leading-none">R$ 37,00</p>
+                        </div>
+                    </div>
+                    <button onclick="window.location.href='#'" class="w-full bg-[#fcd34d] text-[#111111] font-black text-[22px] py-6 rounded-b-xl shadow-[0_5px_0_0_#ca8a04] uppercase">Quero garantir minha vaga!</button>
+                </div>
+            `;
+
+            contentEl.innerHTML = `
+                <div class="max-w-4xl mx-auto w-full animate-in px-6 py-12 md:py-20 flex flex-col">
+                    <h2 class="text-[24px] md:text-[36px] font-black text-center mb-10 font-montserrat">
+                        Alguns dos <span class="text-[#eab308]">vários modelos</span> que você vai aprender comigo:
+                    </h2>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-4xl mx-auto w-full mb-10">
+                        <img src="/images/imagem1.webp" class="w-full aspect-square object-cover rounded-xl shadow-sm border">
+                        <img src="/images/imagem2.webp" class="w-full aspect-square object-cover rounded-xl shadow-sm border">
+                        <img src="/images/imagem3.webp" class="w-full aspect-square object-cover rounded-xl shadow-sm border">
+                        <img src="/images/imagem4.webp" class="w-full aspect-square object-cover rounded-xl shadow-sm border">
+                        <div class="col-span-2 md:col-span-1">
+                            <img src="/images/imagem5.webp" class="w-full aspect-square object-cover rounded-xl shadow-sm border">
+                        </div>
+                    </div>
+                    ${pricing}
+                    <div class="max-w-md mx-auto w-full mt-10 mb-10">
+                        <img src="/images/foto-autora.webp" class="w-full aspect-square object-cover rounded-2xl shadow-md">
+                    </div>
+                    <div class="text-center max-w-2xl mx-auto mb-10">
+                        <h2 class="text-2xl font-black mb-4 font-montserrat">Luana Oliveira</h2>
+                        <p class="text-gray-600 leading-relaxed">Criadora do treinamento Modelando Lucros. Minha missão é ajudar mulheres a conquistarem independência através da arte.</p>
+                    </div>
+                    ${pricing}
+                </div>
+            `;
+        }
+
+        // Início
+        render();
+    </script>
+</body>
+</html>
