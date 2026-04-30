@@ -6,9 +6,9 @@
   <title>Treinamento Modelando Lucros</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
 
-    /* Custom Animations for Tailwind (Replicando tailwindcss-animate) */
+    /* Custom Animations for Tailwind */
     .animate-in { animation-duration: 300ms; animation-fill-mode: both; }
     .duration-300 { animation-duration: 300ms; }
     .duration-500 { animation-duration: 500ms; }
@@ -41,7 +41,6 @@
       to { transform: scale(1); opacity: 1; } 
     }
 
-    /* Esconde a barra de rolagem mas mantém a funcionalidade do scroll lateral */
     .scrollbar-hide::-webkit-scrollbar {
       display: none;
     }
@@ -49,15 +48,42 @@
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
+
+    /* Animação Pulsante Premium para os Botões */
+    @keyframes pulse-premium {
+      0%, 100% { transform: scale(1); box-shadow: 0 4px 6px -1px rgba(169, 92, 63, 0.3), 0 2px 4px -1px rgba(169, 92, 63, 0.2); }
+      50% { transform: scale(1.03); box-shadow: 0 10px 15px -3px rgba(169, 92, 63, 0.4), 0 4px 6px -2px rgba(169, 92, 63, 0.2); }
+    }
+    .btn-pulse {
+      animation: pulse-premium 2.5s infinite ease-in-out;
+    }
+
+    /* Estilos Premium globais */
+    body {
+      background-color: #f8f5f0;
+      color: #3D2B1F;
+    }
+    
+    .text-terracotta { color: #A95C3F; }
+    .bg-terracotta { background-color: #A95C3F; }
+    .border-terracotta { border-color: #A95C3F; }
+    
+    .font-serif-playfair { font-family: 'Playfair Display', serif; }
+    .font-script { font-family: 'Great Vibes', cursive; }
+
+    /* Arredondamento suave e premium para as opções do Quiz */
+    .opt-btn {
+      border-radius: 1rem;
+    }
   </style>
 </head>
-<body class="min-h-screen bg-white font-sans text-gray-900 selection:bg-yellow-200">
+<body class="min-h-screen font-sans selection:bg-[#E8DECB]">
 
-  <div class="max-w-[480px] mx-auto min-h-screen bg-white relative overflow-hidden flex flex-col">
+  <div class="max-w-[480px] mx-auto min-h-screen relative overflow-hidden flex flex-col bg-[#f8f5f0]">
     
-    <!-- Progress Bar (Steps 0 to 9) -->
-    <div id="progress-container" class="w-[90%] mx-auto mt-6 h-1.5 bg-[#fef08a] rounded-full relative z-10 overflow-hidden transition-opacity duration-300">
-      <div id="progress-bar" class="h-full bg-[#eab308] transition-all duration-500 ease-out rounded-full" style="width: 10%;"></div>
+    <!-- Progress Bar -->
+    <div id="progress-container" class="w-[90%] mx-auto mt-6 h-1 bg-[#E8DECB] rounded-full relative z-10 overflow-hidden transition-opacity duration-300">
+      <div id="progress-bar" class="h-full bg-terracotta transition-all duration-500 ease-out rounded-full" style="width: 10%;"></div>
     </div>
 
     <div class="flex-1 overflow-y-auto pb-12 pt-2 scroll-smooth">
@@ -65,40 +91,39 @@
       <!-- STEP 0: INTRO -->
       <div id="step-0" class="step-content">
         <div class="animate-in fade-in slide-in-from-bottom-4 duration-500 font-['Inter',sans-serif]">
-          <div class="text-center px-4 pt-10 pb-6">
-            <h1 class="text-[22px] md:text-3xl font-black text-gray-900 leading-tight tracking-tight font-['Montserrat',sans-serif] uppercase">
-              A NOVA TENDÊNCIA DE 2026:<br />
-              <span class="inline-block bg-[#FFD700] text-white px-2 py-0.5 mt-1 rounded-sm">
-                CERÂMICA PLÁSTICA
-              </span>
+          <div class="text-center px-4 pt-10 pb-8 border-b border-[#DBCAB6]/40 mx-6 mb-6">
+            <p class="text-[11px] font-semibold tracking-[0.2em] uppercase text-[#6B5145] mb-3">A nova tendência de 2026</p>
+            <h1 class="text-[36px] font-serif-playfair text-[#3D2B1F] leading-[1.1] font-medium">
+              Aprenda a faturar com<br />
+              <span class="font-script text-[48px] text-terracotta font-normal tracking-wide lowercase relative -top-2 block mt-1">Cerâmica Plástica</span>
             </h1>
           </div>
 
-          <div class="px-6 text-center text-[#222222] space-y-5 text-[16px] leading-[1.6]">
-            <p>Me chamo <strong>Mariana Oliveira</strong>, e desde 2017 vivo 100% do artesanato com <strong class="text-[#FACC15]">Cerâmica Plástica</strong>. Um tipo de modelagem que conquistou o coração (e o bolso!) de milhares de mulheres.</p>
-            <p>Criei um jeito <strong>simples</strong> e <strong>lucrativo</strong> pra você começar do zero a faturar mais de <strong class="text-[#16a34a]">R$3.000,00</strong> por mês fazendo peças lindas como <strong>brincos e acessórios</strong>, mesmo que nunca tenha feito nada parecido antes.</p>
+          <div class="px-6 text-center space-y-5 text-[15px] leading-[1.6] text-[#5A433A] font-light">
+            <p>Me chamo <strong>Mariana Oliveira</strong>, e desde 2017 vivo 100% do artesanato com <span class="font-medium text-terracotta">Cerâmica Plástica</span>. Um tipo de modelagem que conquistou o coração (e o bolso!) de milhares de mulheres.</p>
+            <p>Criei um jeito <strong>simples</strong> e <strong>lucrativo</strong> pra você começar do zero a faturar mais de <strong>R$3.000,00</strong> por mês fazendo peças lindas como brincos e acessórios, mesmo que nunca tenha feito nada parecido antes.</p>
           </div>
 
-          <div class="mt-8 px-4">
-            <img src="intro-brincos.webp" alt="Modelos de Brincos" class="w-full aspect-[4/5] object-cover"/>
+          <div class="mt-10 px-4">
+            <img src="intro-brincos.webp" alt="Modelos de Brincos" class="w-full aspect-[4/5] object-cover shadow-sm"/>
           </div>
 
-          <div class="px-6 mt-8 text-center text-[#222222] text-[16px] leading-[1.6] flex flex-col items-center gap-2">
+          <div class="px-6 mt-10 text-center text-[15px] leading-[1.6] text-[#5A433A] font-light flex flex-col items-center gap-2">
             <p>
-              <span class="text-sky-400 text-xl align-middle mr-1">💙</span> 
-              Já são mais de <strong>5 mil</strong> alunas transformando criatividade em <strong class="text-[#16a34a]">renda extra</strong> e trabalhando de casa, no seu próprio ritmo.
+              Já são mais de <strong>5 mil</strong> alunas transformando criatividade em <strong>renda extra</strong> e trabalhando de casa, no seu próprio ritmo.
             </p>
           </div>
 
-          <div class="mt-6 px-4">
-            <img src="intro-processo.webp" alt="Processo" class="w-full aspect-square object-cover"/>
+          <div class="mt-8 px-4">
+            <img src="intro-processo.webp" alt="Processo" class="w-full aspect-square object-cover shadow-sm"/>
           </div>
 
-          <div class="px-8 mt-8 mb-10 text-center text-[#222222] text-[16px] leading-[1.6] space-y-5">
+          <div class="px-8 mt-10 mb-10 text-center text-[15px] leading-[1.6] text-[#5A433A] font-light space-y-5">
             <p>E o melhor? Eu vou te ensinar o <strong>passo a passo</strong> pra você também viver disso. Sem precisar investir muito ou depender dos outros.</p>
-            <p>Clica no botão abaixo e responda o questionário!</p>
-            <button onclick="goToStep(1)" class="w-full bg-[#fcd34d] hover:bg-[#fbbf24] text-black font-medium text-[17px] py-4 px-6 rounded-xl shadow-[0_4px_0_0_#d97706] active:shadow-[0_0px_0_0_#d97706] active:translate-y-[4px] transition-all duration-150 mt-4">
-              Continuar!
+            <p class="font-medium text-[#3D2B1F]">Toque no botão abaixo e responda o questionário para iniciarmos.</p>
+            
+            <button onclick="goToStep(1)" class="block w-full bg-terracotta text-white font-medium text-[16px] py-4 px-6 rounded-full btn-pulse active:scale-95 transition-transform duration-150 mt-6 tracking-wide">
+              Continuar
             </button>
           </div>
         </div>
@@ -107,187 +132,191 @@
       <!-- STEP 1: Q1 -->
       <div id="step-1" class="step-content hidden">
         <div class="animate-in fade-in slide-in-from-right-8 duration-300 px-6 py-12 flex flex-col justify-center min-h-[70vh]">
-          <div class="text-center mb-10 font-['Inter',sans-serif]">
-            <h3 class="text-[17px] font-black text-[#111111] mb-0.5 tracking-tight">Pra começar, me conta uma coisa:</h3>
-            <h2 class="text-[25px] font-black text-[#111111] leading-[1.15] tracking-tight whitespace-pre-line">Qual seu nível de experiência com<br/><span class="text-[#ffda00]">Cerâmica Plástica?</span></h2>
+          <div class="text-center mb-10">
+            <p class="text-[11px] font-semibold tracking-[0.2em] uppercase text-[#6B5145] mb-4">Passo 1</p>
+            <h2 class="text-[28px] font-serif-playfair text-[#3D2B1F] leading-tight font-medium">Qual seu nível de experiência com<br/><span class="font-script text-[42px] text-terracotta font-normal lowercase block mt-2">Cerâmica Plástica?</span></h2>
           </div>
-          <div class="space-y-4 opts-container">
-            <button onclick="handleSingle(this, 'experiencia', 'Já faço algumas peças, mas quero melhorar meus acabamentos', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
-              <span class="text-3xl shrink-0">👩‍🎨</span>
-              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg>
+          <div class="space-y-3 opts-container font-light">
+            <button onclick="handleSingle(this, 'experiencia', 'Já faço algumas peças, mas quero melhorar meus acabamentos', true)" class="opt-btn w-full text-left bg-white/60 border border-[#DBCAB6] hover:border-terracotta hover:bg-white p-5 shadow-sm transition-all duration-200 flex items-center gap-4 group active:scale-[0.98]">
+              <span class="text-2xl shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">👩‍🎨</span>
+              <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 border border-[#DBCAB6] group-hover:border-terracotta transition-colors ml-auto order-last">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 text-[#DBCAB6] group-hover:text-terracotta transition-colors"><path d="m9 18 6-6-6-6"/></svg>
               </div>
-              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Já faço algumas peças, mas quero melhorar meus acabamentos</span>
+              <span class="opt-text text-[15px] leading-snug text-[#5A433A] group-hover:text-[#3D2B1F] transition-colors">Já faço algumas peças, mas quero melhorar meus acabamentos</span>
             </button>
-            <button onclick="handleSingle(this, 'experiencia', 'Já tentei, mas tive dificuldades', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
-              <span class="text-3xl shrink-0">😅</span>
-              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg>
+            <button onclick="handleSingle(this, 'experiencia', 'Já tentei, mas tive dificuldades', true)" class="opt-btn w-full text-left bg-white/60 border border-[#DBCAB6] hover:border-terracotta hover:bg-white p-5 shadow-sm transition-all duration-200 flex items-center gap-4 group active:scale-[0.98]">
+              <span class="text-2xl shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">😅</span>
+              <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 border border-[#DBCAB6] group-hover:border-terracotta transition-colors ml-auto order-last">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 text-[#DBCAB6] group-hover:text-terracotta transition-colors"><path d="m9 18 6-6-6-6"/></svg>
               </div>
-              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Já tentei, mas tive dificuldades (massa quebrou, deu bolha)</span>
+              <span class="opt-text text-[15px] leading-snug text-[#5A433A] group-hover:text-[#3D2B1F] transition-colors">Já tentei, mas tive dificuldades (massa quebrou, bolha)</span>
             </button>
-            <button onclick="handleSingle(this, 'experiencia', 'Nunca fiz, mas quero começar do zero', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
-              <span class="text-3xl shrink-0">🥰</span>
-              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg>
+            <button onclick="handleSingle(this, 'experiencia', 'Nunca fiz, mas quero começar do zero', true)" class="opt-btn w-full text-left bg-white/60 border border-[#DBCAB6] hover:border-terracotta hover:bg-white p-5 shadow-sm transition-all duration-200 flex items-center gap-4 group active:scale-[0.98]">
+              <span class="text-2xl shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">🥰</span>
+              <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 border border-[#DBCAB6] group-hover:border-terracotta transition-colors ml-auto order-last">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 text-[#DBCAB6] group-hover:text-terracotta transition-colors"><path d="m9 18 6-6-6-6"/></svg>
               </div>
-              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Nunca fiz, mas quero começar do zero</span>
+              <span class="opt-text text-[15px] leading-snug text-[#5A433A] group-hover:text-[#3D2B1F] transition-colors">Nunca fiz, mas quero começar do zero</span>
             </button>
           </div>
-          <div class="mt-8 text-center"><p class="text-[13px] text-gray-600 font-medium">Personalizamos o seu pacote de acordo com suas respostas.</p></div>
+          <div class="mt-10 text-center border-t border-[#DBCAB6]/40 pt-6"><p class="text-[12px] text-[#888] font-light">Personalizamos o seu pacote de acordo com suas respostas.</p></div>
         </div>
       </div>
 
       <!-- STEP 2: Q2 -->
       <div id="step-2" class="step-content hidden">
         <div class="animate-in fade-in slide-in-from-right-8 duration-300 px-6 py-12 flex flex-col justify-center min-h-[70vh]">
-          <div class="text-center mb-10 font-['Inter',sans-serif]">
-            <h2 class="text-[25px] font-black text-[#111111] leading-[1.15] tracking-tight whitespace-pre-line">Esse vai ser o seu primeiro<br/>treinamento com <span class="text-[#ffda00]">Modelagem?</span></h2>
+          <div class="text-center mb-10">
+             <p class="text-[11px] font-semibold tracking-[0.2em] uppercase text-[#6B5145] mb-4">Passo 2</p>
+            <h2 class="text-[28px] font-serif-playfair text-[#3D2B1F] leading-tight font-medium">Esse vai ser o seu primeiro<br/>treinamento com<br/><span class="font-script text-[42px] text-terracotta font-normal lowercase block mt-2">Modelagem?</span></h2>
           </div>
-          <div class="space-y-4 opts-container">
-            <button onclick="handleSingle(this, 'treinamento', 'Nunca fiz', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
-              <span class="text-3xl shrink-0">🥰</span>
-              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg>
+          <div class="space-y-3 opts-container font-light">
+            <button onclick="handleSingle(this, 'treinamento', 'Nunca fiz', true)" class="opt-btn w-full text-left bg-white/60 border border-[#DBCAB6] hover:border-terracotta hover:bg-white p-5 shadow-sm transition-all duration-200 flex items-center gap-4 group active:scale-[0.98]">
+              <span class="text-2xl shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">🥰</span>
+              <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 border border-[#DBCAB6] group-hover:border-terracotta transition-colors ml-auto order-last">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 text-[#DBCAB6] group-hover:text-terracotta transition-colors"><path d="m9 18 6-6-6-6"/></svg>
               </div>
-              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Nunca fiz nenhum treinamento, esse será o primeiro</span>
+              <span class="opt-text text-[15px] leading-snug text-[#5A433A] group-hover:text-[#3D2B1F] transition-colors">Nunca fiz nenhum treinamento, esse será o primeiro</span>
             </button>
-            <button onclick="handleSingle(this, 'treinamento', 'Já fiz outro', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
-              <span class="text-3xl shrink-0">😅</span>
-              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg>
+            <button onclick="handleSingle(this, 'treinamento', 'Já fiz outro', true)" class="opt-btn w-full text-left bg-white/60 border border-[#DBCAB6] hover:border-terracotta hover:bg-white p-5 shadow-sm transition-all duration-200 flex items-center gap-4 group active:scale-[0.98]">
+              <span class="text-2xl shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">😅</span>
+              <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 border border-[#DBCAB6] group-hover:border-terracotta transition-colors ml-auto order-last">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 text-[#DBCAB6] group-hover:text-terracotta transition-colors"><path d="m9 18 6-6-6-6"/></svg>
               </div>
-              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Já fiz outro treinamento</span>
+              <span class="opt-text text-[15px] leading-snug text-[#5A433A] group-hover:text-[#3D2B1F] transition-colors">Já fiz outro treinamento</span>
             </button>
-            <button onclick="handleSingle(this, 'treinamento', 'Já fiz vários', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
-              <span class="text-3xl shrink-0">🥳</span>
-              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg>
+            <button onclick="handleSingle(this, 'treinamento', 'Já fiz vários', true)" class="opt-btn w-full text-left bg-white/60 border border-[#DBCAB6] hover:border-terracotta hover:bg-white p-5 shadow-sm transition-all duration-200 flex items-center gap-4 group active:scale-[0.98]">
+              <span class="text-2xl shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">🥳</span>
+              <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 border border-[#DBCAB6] group-hover:border-terracotta transition-colors ml-auto order-last">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 text-[#DBCAB6] group-hover:text-terracotta transition-colors"><path d="m9 18 6-6-6-6"/></svg>
               </div>
-              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Já fiz vários treinamentos</span>
+              <span class="opt-text text-[15px] leading-snug text-[#5A433A] group-hover:text-[#3D2B1F] transition-colors">Já fiz vários treinamentos</span>
             </button>
           </div>
-          <div class="mt-8 text-center"><p class="text-[13px] text-gray-600 font-medium">Personalizamos o seu pacote de acordo com suas respostas.</p></div>
+          <div class="mt-10 text-center border-t border-[#DBCAB6]/40 pt-6"><p class="text-[12px] text-[#888] font-light">Personalizamos o seu pacote de acordo com suas respostas.</p></div>
         </div>
       </div>
 
       <!-- STEP 3: Q3 -->
       <div id="step-3" class="step-content hidden">
         <div class="animate-in fade-in slide-in-from-right-8 duration-300 px-6 py-12 flex flex-col justify-center min-h-[70vh]">
-          <div class="text-center mb-10 font-['Inter',sans-serif]">
-            <h2 class="text-[25px] font-black text-[#111111] leading-[1.15] tracking-tight whitespace-pre-line">Quanto tempo você tem disponível<br/>para <span class="text-[#ffda00]">aprender</span>?</h2>
+          <div class="text-center mb-10">
+            <p class="text-[11px] font-semibold tracking-[0.2em] uppercase text-[#6B5145] mb-4">Passo 3</p>
+            <h2 class="text-[28px] font-serif-playfair text-[#3D2B1F] leading-tight font-medium">Quanto tempo você tem disponível<br/>para <span class="font-script text-[42px] text-terracotta font-normal lowercase block mt-1">aprender?</span></h2>
           </div>
-          <div class="space-y-4 opts-container">
-            <button onclick="handleSingle(this, 'tempo', '30m', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
-              <span class="text-3xl shrink-0">🕒</span>
-              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg></div>
-              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Entre 30 minutos a 1 hora</span>
+          <div class="space-y-3 opts-container font-light">
+            <button onclick="handleSingle(this, 'tempo', '30m', true)" class="opt-btn w-full text-left bg-white/60 border border-[#DBCAB6] hover:border-terracotta hover:bg-white p-5 shadow-sm transition-all duration-200 flex items-center gap-4 group active:scale-[0.98]">
+              <span class="text-2xl shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">🕒</span>
+              <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 border border-[#DBCAB6] group-hover:border-terracotta transition-colors ml-auto order-last"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 text-[#DBCAB6] group-hover:text-terracotta transition-colors"><path d="m9 18 6-6-6-6"/></svg></div>
+              <span class="opt-text text-[15px] leading-snug text-[#5A433A] group-hover:text-[#3D2B1F] transition-colors">Entre 30 minutos a 1 hora</span>
             </button>
-            <button onclick="handleSingle(this, 'tempo', '3-4h', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
-              <span class="text-3xl shrink-0">🕒</span>
-              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg></div>
-              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Entre 3 a 4 horas</span>
+            <button onclick="handleSingle(this, 'tempo', '3-4h', true)" class="opt-btn w-full text-left bg-white/60 border border-[#DBCAB6] hover:border-terracotta hover:bg-white p-5 shadow-sm transition-all duration-200 flex items-center gap-4 group active:scale-[0.98]">
+              <span class="text-2xl shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">🕒</span>
+              <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 border border-[#DBCAB6] group-hover:border-terracotta transition-colors ml-auto order-last"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 text-[#DBCAB6] group-hover:text-terracotta transition-colors"><path d="m9 18 6-6-6-6"/></svg></div>
+              <span class="opt-text text-[15px] leading-snug text-[#5A433A] group-hover:text-[#3D2B1F] transition-colors">Entre 3 a 4 horas</span>
             </button>
-            <button onclick="handleSingle(this, 'tempo', 'livre', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
-              <span class="text-3xl shrink-0">🕒</span>
-              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg></div>
-              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Tenho muito tempo livre</span>
+            <button onclick="handleSingle(this, 'tempo', 'livre', true)" class="opt-btn w-full text-left bg-white/60 border border-[#DBCAB6] hover:border-terracotta hover:bg-white p-5 shadow-sm transition-all duration-200 flex items-center gap-4 group active:scale-[0.98]">
+              <span class="text-2xl shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">🕒</span>
+              <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 border border-[#DBCAB6] group-hover:border-terracotta transition-colors ml-auto order-last"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 text-[#DBCAB6] group-hover:text-terracotta transition-colors"><path d="m9 18 6-6-6-6"/></svg></div>
+              <span class="opt-text text-[15px] leading-snug text-[#5A433A] group-hover:text-[#3D2B1F] transition-colors">Tenho muito tempo livre</span>
             </button>
           </div>
-          <div class="mt-8 text-center"><p class="text-[13px] text-gray-600 font-medium">Personalizamos o seu pacote de acordo com suas respostas.</p></div>
+          <div class="mt-10 text-center border-t border-[#DBCAB6]/40 pt-6"><p class="text-[12px] text-[#888] font-light">Personalizamos o seu pacote de acordo com suas respostas.</p></div>
         </div>
       </div>
 
       <!-- STEP 4: Q4 -->
       <div id="step-4" class="step-content hidden">
         <div class="animate-in fade-in slide-in-from-right-8 duration-300 px-6 py-12 flex flex-col justify-center min-h-[70vh]">
-          <div class="text-center mb-10 font-['Inter',sans-serif]">
-            <h2 class="text-[25px] font-black text-[#111111] leading-[1.15] tracking-tight whitespace-pre-line">O que você mais deseja conquistar<br/>com a <span class="text-[#ffda00]">Cerâmica Plástica</span>?</h2>
+          <div class="text-center mb-10">
+            <p class="text-[11px] font-semibold tracking-[0.2em] uppercase text-[#6B5145] mb-4">Passo 4</p>
+            <h2 class="text-[28px] font-serif-playfair text-[#3D2B1F] leading-tight font-medium">O que você mais deseja conquistar<br/>com a <span class="font-script text-[42px] text-terracotta font-normal lowercase block mt-1">Cerâmica Plástica?</span></h2>
           </div>
-          <div class="space-y-4 opts-container">
-            <button onclick="handleSingle(this, 'objetivo', 'independencia', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
-              <span class="text-3xl shrink-0">💲</span>
-              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg></div>
-              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Minha independência financeira e viver do que eu amo</span>
+          <div class="space-y-3 opts-container font-light">
+            <button onclick="handleSingle(this, 'objetivo', 'independencia', true)" class="opt-btn w-full text-left bg-white/60 border border-[#DBCAB6] hover:border-terracotta hover:bg-white p-5 shadow-sm transition-all duration-200 flex items-center gap-4 group active:scale-[0.98]">
+              <span class="text-2xl shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">💲</span>
+              <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 border border-[#DBCAB6] group-hover:border-terracotta transition-colors ml-auto order-last"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 text-[#DBCAB6] group-hover:text-terracotta transition-colors"><path d="m9 18 6-6-6-6"/></svg></div>
+              <span class="opt-text text-[15px] leading-snug text-[#5A433A] group-hover:text-[#3D2B1F] transition-colors">Minha independência financeira e viver do que eu amo</span>
             </button>
-            <button onclick="handleSingle(this, 'objetivo', 'contribuir', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
-              <span class="text-3xl shrink-0">🏡</span>
-              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg></div>
-              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Contribuir nas contas de casa e garantir mais tranquilidade pra mim e minha família</span>
+            <button onclick="handleSingle(this, 'objetivo', 'contribuir', true)" class="opt-btn w-full text-left bg-white/60 border border-[#DBCAB6] hover:border-terracotta hover:bg-white p-5 shadow-sm transition-all duration-200 flex items-center gap-4 group active:scale-[0.98]">
+              <span class="text-2xl shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">🏡</span>
+              <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 border border-[#DBCAB6] group-hover:border-terracotta transition-colors ml-auto order-last"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 text-[#DBCAB6] group-hover:text-terracotta transition-colors"><path d="m9 18 6-6-6-6"/></svg></div>
+              <span class="opt-text text-[15px] leading-snug text-[#5A433A] group-hover:text-[#3D2B1F] transition-colors">Contribuir nas contas de casa e garantir mais tranquilidade pra mim e minha família</span>
             </button>
-            <button onclick="handleSingle(this, 'objetivo', 'tempo', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
-              <span class="text-3xl shrink-0">💜</span>
-              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg></div>
-              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Ter um tempo só meu, pra relaxar e colocar minha criatividade em prática</span>
+            <button onclick="handleSingle(this, 'objetivo', 'tempo', true)" class="opt-btn w-full text-left bg-white/60 border border-[#DBCAB6] hover:border-terracotta hover:bg-white p-5 shadow-sm transition-all duration-200 flex items-center gap-4 group active:scale-[0.98]">
+              <span class="text-2xl shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">💜</span>
+              <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 border border-[#DBCAB6] group-hover:border-terracotta transition-colors ml-auto order-last"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 text-[#DBCAB6] group-hover:text-terracotta transition-colors"><path d="m9 18 6-6-6-6"/></svg></div>
+              <span class="opt-text text-[15px] leading-snug text-[#5A433A] group-hover:text-[#3D2B1F] transition-colors">Ter um tempo só meu, pra relaxar e colocar minha criatividade em prática</span>
             </button>
           </div>
-          <div class="mt-8 text-center"><p class="text-[13px] text-gray-600 font-medium">Personalizamos o seu pacote de acordo com suas respostas.</p></div>
+          <div class="mt-10 text-center border-t border-[#DBCAB6]/40 pt-6"><p class="text-[12px] text-[#888] font-light">Personalizamos o seu pacote de acordo com suas respostas.</p></div>
         </div>
       </div>
 
       <!-- STEP 5: Q5 -->
       <div id="step-5" class="step-content hidden">
         <div class="animate-in fade-in slide-in-from-right-8 duration-300 px-6 py-12 flex flex-col justify-center min-h-[70vh]">
-          <div class="text-center mb-10 font-['Inter',sans-serif]">
-            <h2 class="text-[25px] font-black text-[#111111] leading-[1.15] tracking-tight whitespace-pre-line">Depois que você aprender as fazer as<br/>peças de <span class="text-[#ffda00]">Cerâmica,</span> qual será sua<br/>meta?</h2>
+          <div class="text-center mb-10">
+            <p class="text-[11px] font-semibold tracking-[0.2em] uppercase text-[#6B5145] mb-4">Passo 5</p>
+            <h2 class="text-[28px] font-serif-playfair text-[#3D2B1F] leading-tight font-medium">Depois que você aprender as fazer as peças de <span class="font-script text-[42px] text-terracotta font-normal lowercase inline-block mt-1">Cerâmica,</span><br/>qual será sua meta?</h2>
           </div>
-          <div class="space-y-4 opts-container">
-            <button onclick="handleSingle(this, 'meta', 'vender', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
-              <span class="text-3xl shrink-0">💸</span>
-              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg></div>
-              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Aprender como vender e lucrar com os brincos</span>
+          <div class="space-y-3 opts-container font-light">
+            <button onclick="handleSingle(this, 'meta', 'vender', true)" class="opt-btn w-full text-left bg-white/60 border border-[#DBCAB6] hover:border-terracotta hover:bg-white p-5 shadow-sm transition-all duration-200 flex items-center gap-4 group active:scale-[0.98]">
+              <span class="text-2xl shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">💸</span>
+              <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 border border-[#DBCAB6] group-hover:border-terracotta transition-colors ml-auto order-last"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 text-[#DBCAB6] group-hover:text-terracotta transition-colors"><path d="m9 18 6-6-6-6"/></svg></div>
+              <span class="opt-text text-[15px] leading-snug text-[#5A433A] group-hover:text-[#3D2B1F] transition-colors">Aprender como vender e lucrar com os brincos</span>
             </button>
-            <button onclick="handleSingle(this, 'meta', 'hobby', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
-              <span class="text-3xl shrink-0">🧶</span>
-              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg></div>
-              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Fazer apenas como um hobby</span>
+            <button onclick="handleSingle(this, 'meta', 'hobby', true)" class="opt-btn w-full text-left bg-white/60 border border-[#DBCAB6] hover:border-terracotta hover:bg-white p-5 shadow-sm transition-all duration-200 flex items-center gap-4 group active:scale-[0.98]">
+              <span class="text-2xl shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">🧶</span>
+              <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 border border-[#DBCAB6] group-hover:border-terracotta transition-colors ml-auto order-last"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 text-[#DBCAB6] group-hover:text-terracotta transition-colors"><path d="m9 18 6-6-6-6"/></svg></div>
+              <span class="opt-text text-[15px] leading-snug text-[#5A433A] group-hover:text-[#3D2B1F] transition-colors">Fazer apenas como um hobby</span>
             </button>
-            <button onclick="handleSingle(this, 'meta', 'melhorar', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
-              <span class="text-3xl shrink-0">💲</span>
-              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg></div>
-              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Melhorar meus resultados no meu negócio atual</span>
+            <button onclick="handleSingle(this, 'meta', 'melhorar', true)" class="opt-btn w-full text-left bg-white/60 border border-[#DBCAB6] hover:border-terracotta hover:bg-white p-5 shadow-sm transition-all duration-200 flex items-center gap-4 group active:scale-[0.98]">
+              <span class="text-2xl shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">💲</span>
+              <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 border border-[#DBCAB6] group-hover:border-terracotta transition-colors ml-auto order-last"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 text-[#DBCAB6] group-hover:text-terracotta transition-colors"><path d="m9 18 6-6-6-6"/></svg></div>
+              <span class="opt-text text-[15px] leading-snug text-[#5A433A] group-hover:text-[#3D2B1F] transition-colors">Melhorar meus resultados no meu negócio atual</span>
             </button>
           </div>
-          <div class="mt-8 text-center"><p class="text-[13px] text-gray-600 font-medium">Personalizamos o seu pacote de acordo com suas respostas.</p></div>
+          <div class="mt-10 text-center border-t border-[#DBCAB6]/40 pt-6"><p class="text-[12px] text-[#888] font-light">Personalizamos o seu pacote de acordo com suas respostas.</p></div>
         </div>
       </div>
 
       <!-- STEP 6: Q6 (Multiple + Button) -->
       <div id="step-6" class="step-content hidden">
         <div class="animate-in fade-in slide-in-from-right-8 duration-300 px-6 py-12 flex flex-col justify-center min-h-[70vh]">
-          <div class="text-center mb-10 font-['Inter',sans-serif]">
-            <h2 class="text-[25px] font-black text-[#111111] leading-[1.15] tracking-tight whitespace-pre-line">Você prefere qual estilo de <span class="text-[#ffda00]">Brincos?</span></h2>
+          <div class="text-center mb-10">
+            <p class="text-[11px] font-semibold tracking-[0.2em] uppercase text-[#6B5145] mb-4">Última Pergunta</p>
+            <h2 class="text-[28px] font-serif-playfair text-[#3D2B1F] leading-tight font-medium">Você prefere qual estilo de<br/><span class="font-script text-[42px] text-terracotta font-normal lowercase block mt-1">Brincos?</span></h2>
+            <p class="text-[13px] text-[#888] mt-2 font-light">Você pode marcar mais de uma opção.</p>
           </div>
-          <div class="space-y-4 opts-container">
-            <!-- Note: hideChevron=true -->
-            <button onclick="handleMultiple(this, 'estilo', 'florais')" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
-              <span class="text-3xl shrink-0">🌸</span>
-              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Florais e Orgânicos</span>
+          <div class="space-y-3 opts-container font-light">
+            <button onclick="handleMultiple(this, 'estilo', 'florais')" class="opt-btn w-full text-left bg-white/60 border border-[#DBCAB6] hover:border-terracotta hover:bg-white p-4 shadow-sm transition-all duration-200 flex items-center gap-4 group active:scale-[0.98]">
+              <span class="text-2xl shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">🌸</span>
+              <span class="opt-text text-[15px] leading-snug text-[#5A433A] group-hover:text-[#3D2B1F] transition-colors">Florais e Orgânicos</span>
             </button>
-            <button onclick="handleMultiple(this, 'estilo', 'geometricos')" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
-              <span class="text-3xl shrink-0">🔶</span>
-              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Geométricos e Modernos</span>
+            <button onclick="handleMultiple(this, 'estilo', 'geometricos')" class="opt-btn w-full text-left bg-white/60 border border-[#DBCAB6] hover:border-terracotta hover:bg-white p-4 shadow-sm transition-all duration-200 flex items-center gap-4 group active:scale-[0.98]">
+              <span class="text-2xl shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">🔶</span>
+              <span class="opt-text text-[15px] leading-snug text-[#5A433A] group-hover:text-[#3D2B1F] transition-colors">Geométricos e Modernos</span>
             </button>
-            <button onclick="handleMultiple(this, 'estilo', 'marmorizados')" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
-              <span class="text-3xl shrink-0">🎨</span>
-              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Marmorizados e com Texturas</span>
+            <button onclick="handleMultiple(this, 'estilo', 'marmorizados')" class="opt-btn w-full text-left bg-white/60 border border-[#DBCAB6] hover:border-terracotta hover:bg-white p-4 shadow-sm transition-all duration-200 flex items-center gap-4 group active:scale-[0.98]">
+              <span class="text-2xl shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">🎨</span>
+              <span class="opt-text text-[15px] leading-snug text-[#5A433A] group-hover:text-[#3D2B1F] transition-colors">Marmorizados e com Texturas</span>
             </button>
-            <button onclick="handleMultiple(this, 'estilo', 'resina')" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
-              <span class="text-3xl shrink-0">✨</span>
-              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Com acabamento em Resina</span>
+            <button onclick="handleMultiple(this, 'estilo', 'resina')" class="opt-btn w-full text-left bg-white/60 border border-[#DBCAB6] hover:border-terracotta hover:bg-white p-4 shadow-sm transition-all duration-200 flex items-center gap-4 group active:scale-[0.98]">
+              <span class="text-2xl shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">✨</span>
+              <span class="opt-text text-[15px] leading-snug text-[#5A433A] group-hover:text-[#3D2B1F] transition-colors">Com acabamento em Resina</span>
             </button>
-            <button onclick="handleMultiple(this, 'estilo', 'minimalistas')" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
-              <span class="text-3xl shrink-0">🌿</span>
-              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Minimalistas e Elegantes</span>
+            <button onclick="handleMultiple(this, 'estilo', 'minimalistas')" class="opt-btn w-full text-left bg-white/60 border border-[#DBCAB6] hover:border-terracotta hover:bg-white p-4 shadow-sm transition-all duration-200 flex items-center gap-4 group active:scale-[0.98]">
+              <span class="text-2xl shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">🌿</span>
+              <span class="opt-text text-[15px] leading-snug text-[#5A433A] group-hover:text-[#3D2B1F] transition-colors">Minimalistas e Elegantes</span>
             </button>
-            <button onclick="handleMultiple(this, 'estilo', 'todos')" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
-              <span class="text-3xl shrink-0">😍</span>
-              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Todos os estilos</span>
+            <button onclick="handleMultiple(this, 'estilo', 'todos')" class="opt-btn w-full text-left bg-white/60 border border-[#DBCAB6] hover:border-terracotta hover:bg-white p-4 shadow-sm transition-all duration-200 flex items-center gap-4 group active:scale-[0.98]">
+              <span class="text-2xl shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">😍</span>
+              <span class="opt-text text-[15px] leading-snug text-[#5A433A] group-hover:text-[#3D2B1F] transition-colors">Todos os estilos</span>
             </button>
           </div>
-          <div class="mt-8 text-center"><p class="text-[13px] text-gray-600 font-medium">Personalizamos o seu pacote de acordo com suas respostas.</p></div>
           
-          <button id="btn-continue-estilo" onclick="goToStep(7)" disabled class="w-full font-medium text-[17px] py-4 px-6 rounded-xl transition-all duration-150 mt-6 bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed opacity-80">
+          <button id="btn-continue-estilo" onclick="goToStep(7)" disabled class="w-full font-medium text-[16px] py-4 px-6 rounded-full transition-all duration-150 mt-8 bg-gray-200/50 text-gray-400 border border-gray-200/50 cursor-not-allowed tracking-wide opacity-80">
             Continuar
           </button>
         </div>
@@ -295,44 +324,47 @@
 
       <!-- STEP 7: BRIDGE -->
       <div id="step-7" class="step-content hidden">
-        <div class="animate-in fade-in slide-in-from-right-8 duration-300 px-6 py-10 flex flex-col justify-center font-['Inter',sans-serif]">
-          <h2 class="text-[24px] font-black text-[#111111] leading-[1.15] tracking-tight text-center mb-6 font-['Montserrat',sans-serif]">
-            Precisa de forno especial ou <span class="text-[#ffda00]">ferramentas caras?</span>
+        <div class="animate-in fade-in slide-in-from-right-8 duration-300 px-6 py-10 flex flex-col justify-center min-h-[80vh]">
+          <h2 class="text-[26px] font-serif-playfair text-[#3D2B1F] leading-[1.15] text-center mb-6 font-medium">
+            Precisa de forno especial ou <span class="font-script text-[38px] text-terracotta font-normal lowercase inline-block mt-1">ferramentas caras?</span>
           </h2>
-          <div class="text-[15.5px] text-[#222222] text-center leading-[1.5] space-y-4">
-            <p><strong>Não!</strong> A grande vantagem desse método é que a massa <strong>seca ao ar livre</strong>. Você não precisa de forno, nem de equipamentos complexos.</p>
+          <div class="text-[15px] text-[#5A433A] font-light text-center leading-[1.6] space-y-4">
+            <p><strong>Não!</strong> A grande vantagem desse método é que a massa seca ao ar livre. Você não precisa de forno, nem de equipamentos complexos.</p>
             <p>O método que eu ensino é simples. Com ferramentas básicas ou coisas que você já tem em casa, você consegue criar peças lindas com acabamento profissional na mesa da sua sala.</p>
           </div>
-          <div class="mt-6 mb-12">
-            <img src="ferramentas.webp" alt="Ferramentas simples e secagem ao ar livre" class="w-full aspect-[4/5] object-cover"/>
+          <div class="mt-8 mb-12">
+            <img src="ferramentas.webp" alt="Ferramentas simples e secagem ao ar livre" class="w-full aspect-[4/5] object-cover shadow-sm"/>
           </div>
-          <h2 class="text-[24px] font-black text-[#111111] leading-[1.15] tracking-tight text-center mb-6 font-['Montserrat',sans-serif]">
-            O <span class="text-[#ffda00]">material</span> é caro?
-          </h2>
-          <div class="text-[15.5px] text-[#222222] text-center leading-[1.5]">
-            <p><strong>Nem um pouco!</strong> Um bloquinho de massa custa em média R$ 12,00. E com esse único bloco você consegue fazer vários pares de brincos! Você investe centavos por peça e consegue vender cada uma por <strong>R$ 35 a R$ 60</strong>.</p>
+          
+          <div class="border-t border-[#DBCAB6]/40 pt-10">
+            <h2 class="text-[26px] font-serif-playfair text-[#3D2B1F] leading-[1.15] text-center mb-6 font-medium">
+              O <span class="font-script text-[38px] text-terracotta font-normal lowercase inline-block">material</span> é caro?
+            </h2>
+            <div class="text-[15px] text-[#5A433A] font-light text-center leading-[1.6]">
+              <p><strong>Nem um pouco!</strong> Um bloquinho de massa custa em média R$ 12,00. E com esse único bloco você consegue fazer vários pares de brincos! Você investe centavos por peça e consegue vender cada uma por <strong>R$ 35 a R$ 60</strong>.</p>
+            </div>
+            <div class="mt-8 mb-10">
+              <img src="blocos-massa.webp" alt="Blocos de massa de cerâmica plástica" class="w-full aspect-[16/9] object-cover shadow-sm"/>
+            </div>
+            <button onclick="goToStep(8)" class="block w-full bg-terracotta text-white font-medium text-[16px] py-4 px-6 rounded-full btn-pulse active:scale-95 transition-transform duration-150 tracking-wide">
+              Continuar
+            </button>
           </div>
-          <div class="mt-6 mb-8">
-            <img src="blocos-massa.webp" alt="Blocos de massa de cerâmica plástica" class="w-full aspect-[16/9] object-cover"/>
-          </div>
-          <button onclick="goToStep(8)" class="w-full bg-[#fcd34d] hover:bg-[#fbbf24] text-black font-medium text-[17px] py-4 px-6 rounded-xl shadow-[0_4px_0_0_#d97706] active:shadow-[0_0px_0_0_#d97706] active:translate-y-[4px] transition-all duration-150">
-            Continuar
-          </button>
         </div>
       </div>
 
       <!-- STEP 8: TESTIMONIALS -->
       <div id="step-8" class="step-content hidden">
-        <div class="animate-in fade-in slide-in-from-right-8 duration-300 px-6 py-10 flex flex-col justify-center font-['Inter',sans-serif] min-h-[80vh]">
-          <h2 class="text-[23px] font-black text-[#111111] leading-[1.2] tracking-tight text-center mb-8 font-['Montserrat',sans-serif]">
-            Olha o que minhas alunas estão<br/>dizendo sobre o treinamento<br/>
-            <span class="inline-block bg-[#FFD700] text-white px-2 py-0.5 mt-1 rounded-sm uppercase tracking-normal">Modelando Lucros!</span>
+        <div class="animate-in fade-in slide-in-from-right-8 duration-300 px-6 py-12 flex flex-col justify-center min-h-[80vh]">
+          <h2 class="text-[26px] font-serif-playfair text-[#3D2B1F] leading-[1.2] text-center mb-8 font-medium">
+            Olha o que minhas alunas estão dizendo sobre o treinamento<br/>
+            <span class="font-script text-[42px] text-terracotta font-normal lowercase block mt-2">Modelando Lucros</span>
           </h2>
-          <div class="flex gap-3 mt-2 mb-10">
-            <img src="prints-alunas.webp" alt="Print WhatsApp 1" class="w-1/2 aspect-[4/5] object-cover"/>
-            <img src="prints-alunas2.webp" alt="Print WhatsApp 2" class="w-1/2 aspect-[4/5] object-cover"/>
+          <div class="flex gap-3 mt-4 mb-12">
+            <img src="prints-alunas.webp" alt="Print WhatsApp 1" class="w-1/2 aspect-[4/5] object-cover shadow-sm"/>
+            <img src="prints-alunas2.webp" alt="Print WhatsApp 2" class="w-1/2 aspect-[4/5] object-cover shadow-sm"/>
           </div>
-          <button onclick="goToStep(9)" class="w-full bg-[#fcd34d] hover:bg-[#fbbf24] text-black font-medium text-[17px] py-4 px-6 rounded-xl shadow-[0_4px_0_0_#d97706] active:shadow-[0_0px_0_0_#d97706] active:translate-y-[4px] transition-all duration-150">
+          <button onclick="goToStep(9)" class="block w-full bg-terracotta text-white font-medium text-[16px] py-4 px-6 rounded-full btn-pulse active:scale-95 transition-transform duration-150 tracking-wide">
             Quero aprender!
           </button>
         </div>
@@ -340,209 +372,234 @@
 
       <!-- STEP 9: LOADING -->
       <div id="step-9" class="step-content hidden">
-        <div class="animate-in fade-in zoom-in duration-500 px-6 py-16 flex flex-col justify-center min-h-[70vh] font-['Inter',sans-serif]">
-          <div class="text-center mb-12">
-            <h2 class="text-[26px] md:text-[28px] font-black text-[#111111] leading-[1.2] tracking-tight font-['Montserrat',sans-serif]">
-              Você está a poucos passos de iniciar<br/>uma <span class="text-[#facc15]">GRANDE</span> <span class="bg-[#facc15] text-white px-1.5 pb-0.5 rounded-sm inline-block">mudança</span>!
+        <div class="animate-in fade-in zoom-in duration-500 px-6 py-20 flex flex-col justify-center min-h-[70vh]">
+          <div class="text-center mb-16">
+            <h2 class="text-[28px] font-serif-playfair text-[#3D2B1F] leading-[1.2] font-medium">
+              Você está a poucos passos de iniciar uma<br/>
+              <span class="font-script text-[48px] text-terracotta font-normal lowercase block mt-2">grande mudança</span>
             </h2>
           </div>
-          <div class="w-full max-w-sm mx-auto mb-6">
-            <div class="flex justify-between items-end mb-2 px-1">
-              <span class="text-[#facc15] font-bold text-[15px]">Preparando seu treinamento</span>
-              <span id="loading-pct" class="text-[#facc15] font-bold text-[16px]">0%</span>
+          <div class="w-full max-w-sm mx-auto mb-8">
+            <div class="flex justify-between items-end mb-3 px-1 font-serif-playfair">
+              <span class="text-[#6B5145] text-[15px] italic">Preparando seu treinamento...</span>
+              <span id="loading-pct" class="text-terracotta font-bold text-[16px]">0%</span>
             </div>
-            <div class="w-full h-3.5 bg-[#fef9c3] rounded-full overflow-hidden shadow-inner">
-              <div id="loading-fill" class="h-full bg-[#facc15] transition-all duration-75 ease-linear rounded-full" style="width: 0%;"></div>
+            <div class="w-full h-[3px] bg-[#E8DECB] overflow-hidden">
+              <div id="loading-fill" class="h-full bg-terracotta transition-all duration-75 ease-linear" style="width: 0%;"></div>
             </div>
           </div>
-          <p class="text-center text-[13px] font-bold text-[#111111]">Carregando um treinamento exclusivo pra você</p>
+          <p class="text-center text-[13px] font-light text-[#888] tracking-widest uppercase">Carregando exclusividade</p>
         </div>
       </div>
 
       <!-- STEP 10: PITCH -->
       <div id="step-10" class="step-content hidden">
-        <div class="animate-in fade-in slide-in-from-bottom-8 duration-700 px-5 py-8 flex flex-col font-['Inter',sans-serif]">
+        <div class="animate-in fade-in slide-in-from-bottom-8 duration-700 px-5 py-8 flex flex-col">
           
-          <div class="bg-[#e6f4ea] p-5 rounded-2xl text-center mb-8 border border-[#cce8d6]">
-            <h3 class="text-[#16a34a] font-black text-[19px] mb-2">Parabéns!</h3>
-            <p class="text-[#111111] font-bold text-[15px] leading-tight">Você foi qualificada para participar do<br/>treinamento MODELANDO LUCROS!</p>
+          <div class="border-y border-[#DBCAB6]/50 py-5 text-center mb-10">
+            <h3 class="text-terracotta font-serif-playfair text-[24px] italic mb-1">Parabéns!</h3>
+            <p class="text-[#3D2B1F] font-light text-[15px] leading-tight">Você foi qualificada para participar do<br/>treinamento MODELANDO LUCROS.</p>
           </div>
 
-          <img src="funil-mockup-vip.webp" alt="Mockup do Treinamento VIP" class="w-full object-cover mb-8"/>
+          <img src="funil-mockup-vip.webp" alt="Mockup do Treinamento VIP" class="w-full object-cover mb-10 shadow-sm"/>
 
-          <h2 class="text-[22px] font-black text-[#111111] leading-[1.2] tracking-tight text-center mb-8 font-['Montserrat',sans-serif]">
-            Olha tudo o que você vai aprender no<br/>treinamento <span class="bg-[#facc15] text-white px-1.5 pb-0.5 rounded-sm inline-block">Modelando Lucros</span>!
+          <h2 class="text-[26px] font-serif-playfair text-[#3D2B1F] leading-[1.2] text-center mb-10 font-medium">
+            Tudo o que você vai aprender no treinamento<br/>
+            <span class="font-script text-[38px] text-terracotta font-normal lowercase block mt-1">Modelando Lucros</span>
           </h2>
 
-          <div class="space-y-4 mb-10" id="benefits-list">
-             <!-- JS will inject the checklist to save repeating HTML, or we hardcode. Let's hardcode for full zero-JS fallback visual -->
-             <div class="flex gap-3 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#16a34a" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#16a34a] shrink-0 bg-white"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p class="text-[14.5px] text-[#222222] leading-[1.4]"><strong>Acesso vitalício</strong>, assista sempre que quiser</p></div>
-             <div class="flex gap-3 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#16a34a" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#16a34a] shrink-0 bg-white"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p class="text-[14.5px] text-[#222222] leading-[1.4]"><strong>Condicionamento correto</strong>: O segredo para a massa não rachar após a secagem</p></div>
-             <div class="flex gap-3 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#16a34a" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#16a34a] shrink-0 bg-white"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p class="text-[14.5px] text-[#222222] leading-[1.4]"><strong>Criação de texturas</strong>, efeito marmorizado, listras e padrões orgânicos</p></div>
-             <div class="flex gap-3 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#16a34a" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#16a34a] shrink-0 bg-white"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p class="text-[14.5px] text-[#222222] leading-[1.4]">O tempo e a <strong>técnica EXATA de secagem natural</strong> sem deformar a peça</p></div>
-             <div class="flex gap-3 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#16a34a" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#16a34a] shrink-0 bg-white"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p class="text-[14.5px] text-[#222222] leading-[1.4]"><strong>Lixamento e polimento</strong> para um acabamento liso e impecável</p></div>
-             <div class="flex gap-3 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#16a34a" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#16a34a] shrink-0 bg-white"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p class="text-[14.5px] text-[#222222] leading-[1.4]">Aplicação de <strong>resina UV</strong> para um brilho vitrificado de joia</p></div>
-             <div class="flex gap-3 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#16a34a" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#16a34a] shrink-0 bg-white"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p class="text-[14.5px] text-[#222222] leading-[1.4]"><strong>Montagem profissional</strong> das ferragens (argolas, pinos, bases de brinco)</p></div>
-             <div class="flex gap-3 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#16a34a" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#16a34a] shrink-0 bg-white"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p class="text-[14.5px] text-[#222222] leading-[1.4]">Como calcular o preço ideal de cada peça para <strong>lucrar até 500%</strong> em cima</p></div>
-             <div class="flex gap-3 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#16a34a" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#16a34a] shrink-0 bg-white"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p class="text-[14.5px] text-[#222222] leading-[1.4]">Como <strong>vender nas redes sociais</strong> e atrair suas primeiras clientes</p></div>
-             <div class="flex gap-3 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#16a34a" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#16a34a] shrink-0 bg-white"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p class="text-[14.5px] text-[#222222] leading-[1.4]">Método para faturar até <strong>R$ 3.000 por mês</strong> com suas peças exclusivas</p></div>
-             <div class="flex gap-3 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#16a34a" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#16a34a] shrink-0 bg-white"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p class="text-[14.5px] text-[#222222] leading-[1.4]">Lista completa de <strong>fornecedores testados</strong> para comprar massa e ferragens</p></div>
+          <div class="space-y-5 mb-12 font-light px-2" id="benefits-list">
+             <div class="flex gap-4 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-terracotta shrink-0 mt-0.5"><path d="M20 6 9 17l-5-5"/></svg><p class="text-[15px] text-[#5A433A] leading-[1.5]"><strong>Acesso vitalício</strong>, assista sempre que quiser</p></div>
+             <div class="flex gap-4 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-terracotta shrink-0 mt-0.5"><path d="M20 6 9 17l-5-5"/></svg><p class="text-[15px] text-[#5A433A] leading-[1.5]"><strong>Condicionamento correto</strong>: O segredo para a massa não rachar após a secagem</p></div>
+             <div class="flex gap-4 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-terracotta shrink-0 mt-0.5"><path d="M20 6 9 17l-5-5"/></svg><p class="text-[15px] text-[#5A433A] leading-[1.5]"><strong>Criação de texturas</strong>, efeito marmorizado, listras e padrões orgânicos</p></div>
+             <div class="flex gap-4 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-terracotta shrink-0 mt-0.5"><path d="M20 6 9 17l-5-5"/></svg><p class="text-[15px] text-[#5A433A] leading-[1.5]">O tempo e a <strong>técnica EXATA de secagem natural</strong> sem deformar a peça</p></div>
+             <div class="flex gap-4 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-terracotta shrink-0 mt-0.5"><path d="M20 6 9 17l-5-5"/></svg><p class="text-[15px] text-[#5A433A] leading-[1.5]"><strong>Lixamento e polimento</strong> para um acabamento liso e impecável</p></div>
+             <div class="flex gap-4 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-terracotta shrink-0 mt-0.5"><path d="M20 6 9 17l-5-5"/></svg><p class="text-[15px] text-[#5A433A] leading-[1.5]">Aplicação de <strong>resina UV</strong> para um brilho vitrificado de joia</p></div>
+             <div class="flex gap-4 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-terracotta shrink-0 mt-0.5"><path d="M20 6 9 17l-5-5"/></svg><p class="text-[15px] text-[#5A433A] leading-[1.5]"><strong>Montagem profissional</strong> das ferragens (argolas, pinos, bases de brinco)</p></div>
+             <div class="flex gap-4 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-terracotta shrink-0 mt-0.5"><path d="M20 6 9 17l-5-5"/></svg><p class="text-[15px] text-[#5A433A] leading-[1.5]">Como calcular o preço ideal de cada peça para <strong>lucrar até 500%</strong> em cima</p></div>
+             <div class="flex gap-4 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-terracotta shrink-0 mt-0.5"><path d="M20 6 9 17l-5-5"/></svg><p class="text-[15px] text-[#5A433A] leading-[1.5]">Como <strong>vender nas redes sociais</strong> e atrair suas primeiras clientes</p></div>
+             <div class="flex gap-4 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-terracotta shrink-0 mt-0.5"><path d="M20 6 9 17l-5-5"/></svg><p class="text-[15px] text-[#5A433A] leading-[1.5]">Método para faturar até <strong>R$ 3.000 por mês</strong> com suas peças exclusivas</p></div>
+             <div class="flex gap-4 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-terracotta shrink-0 mt-0.5"><path d="M20 6 9 17l-5-5"/></svg><p class="text-[15px] text-[#5A433A] leading-[1.5]">Lista completa de <strong>fornecedores testados</strong> para comprar massa e ferragens</p></div>
           </div>
 
           <!-- CARROSSEL EBOOK COMEÇA AQUI -->
-          <div class="mt-10 mb-12">
-            <h3 class="text-[20px] font-black text-[#111111] leading-[1.2] tracking-tight text-center mb-6 font-['Montserrat',sans-serif]">
-              Uma espiadinha por dentro do<br/>seu material <span class="text-[#eab308]">exclusivo</span>:
+          <div class="mt-8 mb-14 py-8 border-y border-[#DBCAB6]/40">
+            <h3 class="text-[24px] font-serif-playfair text-[#3D2B1F] leading-[1.2] text-center mb-8 font-medium">
+              Uma espiadinha por dentro do<br/>seu material <span class="font-script text-[36px] text-terracotta font-normal lowercase inline-block mt-1">exclusivo</span>
             </h3>
             
             <div class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 scrollbar-hide -mx-5 px-5">
-              <div class="w-[85%] shrink-0 snap-center overflow-hidden rounded-xl shadow-md border border-gray-100">
+              <div class="w-[85%] shrink-0 snap-center overflow-hidden shadow-sm">
                 <img src="ebook1.webp" alt="Página 1 do Ebook" class="w-full h-auto object-cover"/>
               </div>
-              <div class="w-[85%] shrink-0 snap-center overflow-hidden rounded-xl shadow-md border border-gray-100">
+              <div class="w-[85%] shrink-0 snap-center overflow-hidden shadow-sm">
                 <img src="ebook2.webp" alt="Página 2 do Ebook" class="w-full h-auto object-cover"/>
               </div>
-              <div class="w-[85%] shrink-0 snap-center overflow-hidden rounded-xl shadow-md border border-gray-100">
+              <div class="w-[85%] shrink-0 snap-center overflow-hidden shadow-sm">
                 <img src="ebook3.webp" alt="Página 3 do Ebook" class="w-full h-auto object-cover"/>
               </div>
-              <div class="w-[85%] shrink-0 snap-center overflow-hidden rounded-xl shadow-md border border-gray-100">
+              <div class="w-[85%] shrink-0 snap-center overflow-hidden shadow-sm">
                 <img src="ebook4.webp" alt="Página 4 do Ebook" class="w-full h-auto object-cover"/>
               </div>
-              <div class="w-[85%] shrink-0 snap-center overflow-hidden rounded-xl shadow-md border border-gray-100">
+              <div class="w-[85%] shrink-0 snap-center overflow-hidden shadow-sm">
                 <img src="ebook5.webp" alt="Página 5 do Ebook" class="w-full h-auto object-cover"/>
               </div>
-              <div class="w-[85%] shrink-0 snap-center overflow-hidden rounded-xl shadow-md border border-gray-100">
+              <div class="w-[85%] shrink-0 snap-center overflow-hidden shadow-sm">
                 <img src="ebook6.webp" alt="Página 6 do Ebook" class="w-full h-auto object-cover"/>
               </div>
             </div>
             
-            <p class="text-center text-[12px] text-gray-400 mt-2 font-medium flex items-center justify-center gap-1.5">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
-              Deslize para ver as páginas
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <p class="text-center text-[11px] uppercase tracking-widest text-[#888] mt-4 font-light flex items-center justify-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+              Deslize para ver
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </p>
           </div>
           <!-- CARROSSEL EBOOK TERMINA AQUI -->
 
-          <div class="mb-10 text-center">
-            <h3 class="text-[#eab308] font-black text-[18px] mb-6 font-['Montserrat',sans-serif] px-4">🎁 Ganhe BÔNUS grátis se garantir sua vaga AGORA:</h3>
-            <div class="space-y-4 text-left text-[14.5px] text-[#222222] leading-[1.5]">
-              <p><span class="bg-[#fef08a] text-yellow-800 font-bold px-1 rounded mr-1">Bônus 1:</span> Como montar seu perfil no Instagram para vender brincos.</p>
-              <p><span class="bg-[#fef08a] text-yellow-800 font-bold px-1 rounded mr-1">Bônus 2:</span> <strong>Acesso vitalício</strong> ao treinamento pra você ver quando quiser no seu ritmo.</p>
-              <p><span class="bg-[#fef08a] text-yellow-800 font-bold px-1 rounded mr-1">Bônus 3:</span> <strong>Como tirar fotos que vendem</strong> usando apenas o seu celular.</p>
-              <p><span class="bg-[#fef08a] text-yellow-800 font-bold px-1 rounded mr-1">Bônus 4:</span> <strong>Planilha de precificação</strong> automática!</p>
+          <div class="mb-14 px-2">
+            <h3 class="text-[#3D2B1F] font-serif-playfair text-[22px] font-medium mb-6 text-center">Bônus Exclusivos para você:</h3>
+            <div class="space-y-4 text-[14.5px] text-[#5A433A] leading-[1.6] font-light">
+              <p><span class="text-terracotta font-medium mr-1 uppercase text-[12px] tracking-wider">Bônus 1:</span> Como montar seu perfil no Instagram para vender brincos.</p>
+              <div class="w-full h-px bg-[#DBCAB6]/30"></div>
+              <p><span class="text-terracotta font-medium mr-1 uppercase text-[12px] tracking-wider">Bônus 2:</span> Acesso vitalício ao treinamento pra você ver no seu ritmo.</p>
+              <div class="w-full h-px bg-[#DBCAB6]/30"></div>
+              <p><span class="text-terracotta font-medium mr-1 uppercase text-[12px] tracking-wider">Bônus 3:</span> Como tirar fotos que vendem usando apenas o seu celular.</p>
+              <div class="w-full h-px bg-[#DBCAB6]/30"></div>
+              <p><span class="text-terracotta font-medium mr-1 uppercase text-[12px] tracking-wider">Bônus 4:</span> Planilha de precificação automática.</p>
             </div>
           </div>
 
-          <div class="bg-[#ffe4e6] text-[#be123c] font-bold text-center py-3.5 rounded-xl text-[14px] shadow-sm mb-12">
-            <span class="text-[#9f1239]">Corra!</span> Falta apenas 17 vagas disponíveis
+          <div class="border border-terracotta/30 bg-terracotta/5 text-terracotta text-center py-4 rounded-sm text-[13px] tracking-widest uppercase mb-14 font-light">
+            Vagas Limitadas Disponíveis
           </div>
 
-          <h2 class="text-[22px] font-black text-[#111111] leading-[1.2] tracking-tight text-center mb-6 font-['Montserrat',sans-serif]">Alguns dos <span class="text-[#eab308]">vários modelos</span> que você<br/>vai aprender comigo:</h2>
+          <h2 class="text-[26px] font-serif-playfair text-[#3D2B1F] leading-[1.2] text-center mb-8 font-medium">Alguns dos <span class="font-script text-[38px] text-terracotta font-normal lowercase inline-block mt-1">modelos</span> que você<br/>vai aprender comigo:</h2>
           
-          <div class="grid grid-cols-2 gap-3 mb-4">
-            <img src="imagem1.webp" alt="Modelo 1" class="w-full aspect-square object-cover"/>
-            <img src="imagem2.webp" alt="Modelo 2" class="w-full aspect-square object-cover"/>
-            <img src="imagem3.webp" alt="Modelo 3" class="w-full aspect-square object-cover"/>
-            <img src="imagem4.webp" alt="Modelo 4" class="w-full aspect-square object-cover"/>
-            <img src="imagem5.webp" alt="Modelo 5" class="col-span-2 w-full aspect-[2/1] object-cover"/>
+          <div class="grid grid-cols-2 gap-3 mb-10">
+            <img src="imagem1.webp" alt="Modelo 1" class="w-full aspect-square object-cover shadow-sm"/>
+            <img src="imagem2.webp" alt="Modelo 2" class="w-full aspect-square object-cover shadow-sm"/>
+            <img src="imagem3.webp" alt="Modelo 3" class="w-full aspect-square object-cover shadow-sm"/>
+            <img src="imagem4.webp" alt="Modelo 4" class="w-full aspect-square object-cover shadow-sm"/>
+            <img src="imagem5.webp" alt="Modelo 5" class="col-span-2 w-full aspect-[2/1] object-cover shadow-sm"/>
           </div>
 
-          <!-- Pricing Block 1 -->
-          <div class="flex flex-col mt-8 mb-6">
-            <div class="bg-[#d1f5e0] rounded-t-xl rounded-b-sm p-5 flex items-center justify-between border-t border-x border-[#bbf7d0]">
-              <span class="text-[#16a34a] font-black text-[17px] w-1/2 leading-tight">Curso Modelando Lucros</span>
-              <div class="text-right">
-                <p class="text-green-600/80 text-[10px] font-bold mb-0.5 line-through">DE R$ 97,00</p>
-                <p class="text-[#16a34a] font-black text-[26px] leading-none mb-1">R$ 37,00</p>
-                <p class="text-[#16a34a] text-[11px] font-bold">Pagamento Único</p>
-              </div>
+          <!-- Pricing Block 1 (Otimizado para Alta Conversão) -->
+          <div class="flex flex-col mb-12 relative mt-4">
+            <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#3D2B1F] text-[#E8DECB] text-[10px] font-bold uppercase tracking-widest py-1.5 px-5 rounded-full z-10 shadow-md whitespace-nowrap">
+              Oferta Especial
             </div>
-            <a href="javascript:alert('Insira seu link de checkout aqui!')" class="text-center w-full bg-[#facc15] hover:bg-[#eab308] text-[#111111] font-bold text-[17px] py-5 px-6 rounded-b-xl shadow-[0_4px_0_0_#ca8a04] active:shadow-[0_0px_0_0_#ca8a04] active:translate-y-[4px] transition-all duration-150 z-10">
-              Clique aqui e garanta o treinamento!
-            </a>
-          </div>
-
-          <img src="foto-autora.webp" alt="Mariana Oliveira" class="w-full aspect-square object-cover mb-8 mt-2"/>
-
-          <h2 class="text-[20px] font-black text-[#111111] leading-[1.2] tracking-tight text-center mb-6 font-['Montserrat',sans-serif]">Mariana Oliveira</h2>
-          <div class="text-[15px] text-[#222222] text-center leading-[1.5] space-y-4 mb-12">
-            <p>Criadora do treinamento <strong>Modelando Lucros</strong> e apaixonada por modelagem desde 2017.</p>
-            <p>Minha história começou de forma simples: eu precisava de uma renda extra que não exigisse maquinário pesado ou um ateliê fora de casa. Foi aí que conheci esse material incrível, que permite criar peças profissionais secando naturalmente, sem precisar de forno ou grandes investimentos.</p>
-            <p>Me especializei em técnicas de marmorizado, lixamento, aplicação de resina e estratégias de vendas, e hoje vivo daquilo que amo: criar <strong>brincos e acessórios femininos</strong> que são verdadeiras joias artesanais.</p>
-            <p>Hoje ensino mais de 5 mil alunas a terem sua independência financeira. Quero te mostrar que você também pode transformar sua paixão em <strong>uma fonte de renda lucrativa!</strong></p>
-          </div>
-
-          <h2 class="text-[22px] font-black text-[#111111] leading-[1.2] tracking-tight text-center mb-8 font-['Montserrat',sans-serif]">Veja o que as alunas da turma 1 estão<br/>falando do treinamento:</h2>
-          
-          <div class="space-y-4 mb-8">
-            <!-- Review 1 -->
-            <div class="border border-gray-200 rounded-2xl p-5 shadow-sm bg-white">
-              <div class="flex gap-1 mb-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <div class="bg-white border border-terracotta/40 p-8 text-center shadow-lg rounded-2xl relative pt-10">
+              <span class="text-[#3D2B1F] font-serif-playfair text-[22px] leading-tight block mb-2">Treinamento Completo</span>
+              <p class="text-[#888] text-[13px] font-light mb-1">De <span class="line-through font-medium text-[#A95C3F]/60">R$ 97,00</span> por apenas:</p>
+              
+              <div class="flex items-center justify-center gap-1 mb-2">
+                <span class="text-[#3D2B1F] font-medium text-[20px] translate-y-1">R$</span>
+                <span class="text-[#3D2B1F] font-medium text-[46px] leading-none tracking-tight">17,00</span>
               </div>
-              <h4 class="font-bold text-[#eab308] text-[16px] leading-tight">Maria Garcia</h4>
-              <p class="text-gray-500 text-[12px] mb-3">@mariaagnc1</p>
-              <p class="text-[#222222] text-[14.5px] leading-[1.4]">Eu não tinha dom nenhum, mas com o método consegui fazer meu primeiro par de brincos no primeiro dia!</p>
-            </div>
-            <!-- Review 2 -->
-            <div class="border border-gray-200 rounded-2xl p-5 shadow-sm bg-white">
-              <div class="flex gap-1 mb-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              </div>
-              <h4 class="font-bold text-[#eab308] text-[16px] leading-tight">Camila Ferreira</h4>
-              <p class="text-gray-500 text-[12px] mb-3">@camilaa2ferrer</p>
-              <p class="text-[#222222] text-[14.5px] leading-[1.4]">Já fiz minha primeira venda! A técnica da resina deixa a peça parecendo uma joia cara, amei muito.</p>
-            </div>
-            <!-- Review 3 -->
-            <div class="border border-gray-200 rounded-2xl p-5 shadow-sm bg-white">
-              <div class="flex gap-1 mb-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              </div>
-              <h4 class="font-bold text-[#eab308] text-[16px] leading-tight">Maressa Ribeiro</h4>
-              <p class="text-gray-500 text-[12px] mb-3">@maressibeiro</p>
-              <p class="text-[#222222] text-[14.5px] leading-[1.4]">Gente, fiquei encantada com o curso, achei que a massa ia rachar na secagem mas a Mariana ensina certinho o ponto e o tempo.</p>
+              <p class="text-terracotta text-[11px] font-bold uppercase tracking-widest mb-8">Pagamento Único • Acesso Vitalício</p>
+              
+              <a href="javascript:alert('Insira seu link de checkout aqui!')" class="text-center block w-full bg-terracotta hover:bg-[#8A4A32] text-white font-medium text-[16px] py-4 px-6 rounded-full btn-pulse active:scale-95 transition-transform duration-150 shadow-md tracking-wide">
+                Garantir minha vaga agora
+              </a>
+              
+              <p class="text-[11px] text-[#888] font-medium mt-4 flex items-center justify-center gap-1.5 uppercase tracking-wider">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-600"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Compra 100% Segura
+              </p>
             </div>
           </div>
 
-          <!-- Pricing Block 2 with Badges -->
-          <div class="flex flex-col mt-8 mb-6">
-            <div class="bg-[#d1f5e0] rounded-t-xl rounded-b-sm p-5 flex items-center justify-between border-t border-x border-[#bbf7d0]">
-              <span class="text-[#16a34a] font-black text-[17px] w-1/2 leading-tight">Curso Modelando Lucros</span>
-              <div class="text-right">
-                <p class="text-green-600/80 text-[10px] font-bold mb-0.5 line-through">DE R$ 97,00</p>
-                <p class="text-[#16a34a] font-black text-[26px] leading-none mb-1">R$ 37,00</p>
-                <p class="text-[#16a34a] text-[11px] font-bold">Pagamento Único</p>
-              </div>
+          <div class="border-t border-[#DBCAB6]/40 pt-10 mb-8 mt-4">
+            <img src="foto-autora.webp" alt="Mariana Oliveira" class="w-full aspect-square object-cover shadow-sm mb-8"/>
+
+            <h2 class="text-[24px] font-serif-playfair text-[#3D2B1F] leading-[1.2] text-center mb-6 font-medium">Mariana Oliveira</h2>
+            <div class="text-[15px] text-[#5A433A] font-light text-center leading-[1.6] space-y-5">
+              <p>Criadora do treinamento <strong>Modelando Lucros</strong> e apaixonada por modelagem desde 2017.</p>
+              <p>Minha história começou de forma simples: eu precisava de uma renda extra que não exigisse maquinário pesado ou um ateliê fora de casa. Foi aí que conheci esse material incrível, que permite criar peças profissionais secando naturalmente, sem precisar de forno ou grandes investimentos.</p>
+              <p>Me especializei em técnicas de marmorizado, lixamento, aplicação de resina e estratégias de vendas, e hoje vivo daquilo que amo: criar <strong>brincos e acessórios femininos</strong> que são verdadeiras joias artesanais.</p>
+              <p>Hoje ensino mais de 5 mil alunas a terem sua independência financeira. Quero te mostrar que você também pode transformar sua paixão em <strong>uma fonte de renda lucrativa.</strong></p>
             </div>
-            <a href="javascript:alert('Insira seu link de checkout aqui!')" class="text-center w-full bg-[#facc15] hover:bg-[#eab308] text-[#111111] font-bold text-[17px] py-5 px-6 rounded-b-xl shadow-[0_4px_0_0_#ca8a04] active:shadow-[0_0px_0_0_#ca8a04] active:translate-y-[4px] transition-all duration-150 z-10">
-              Clique aqui e garanta o treinamento!
-            </a>
+          </div>
+
+          <div class="border-t border-[#DBCAB6]/40 pt-10 mb-8 mt-4">
+            <h2 class="text-[26px] font-serif-playfair text-[#3D2B1F] leading-[1.2] text-center mb-10 font-medium">Veja o que as alunas da turma 1<br/>estão <span class="font-script text-[38px] text-terracotta font-normal lowercase inline-block mt-1">falando:</span></h2>
             
-            <div class="flex flex-col items-center gap-5 mt-8 mb-2">
-              <div class="flex items-center gap-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-14 h-14 text-[#eab308] shrink-0"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2-1 4-2 7-2 2.5 0 4.5 1 6.5 2a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
-                <div>
-                  <p class="font-black text-[#111111] text-[15px] leading-tight">7 DIAS DE GARANTIA</p>
-                  <p class="font-black text-[#111111] text-[15px] leading-tight mb-1">TESTE SEM MEDO</p>
-                  <p class="text-gray-500 text-[9px] font-bold">DEVOLVEMOS O VALOR NO PIX OU CARTÃO DE CRÉDITO.</p>
+            <div class="space-y-4 mb-8">
+              <!-- Review 1 -->
+              <div class="bg-white p-6 shadow-sm border border-[#DBCAB6]/40">
+                <div class="flex gap-1 mb-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#A95C3F" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#A95C3F" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#A95C3F" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#A95C3F" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#A95C3F" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                 </div>
+                <h4 class="font-serif-playfair font-medium text-[17px] text-[#3D2B1F] mb-0.5">Maria Garcia</h4>
+                <p class="text-[#888] text-[12px] font-light mb-4">@mariaagnc1</p>
+                <p class="text-[#5A433A] text-[14.5px] leading-[1.5] font-light italic">"Eu não tinha dom nenhum, mas com o método consegui fazer meu primeiro par de brincos no primeiro dia!"</p>
               </div>
-              <div class="flex items-center gap-2 text-gray-400 text-xs font-bold mt-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-green-600"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                <span class="text-green-600 text-sm tracking-wide">COMPRA 100% SEGURA</span>
+              <!-- Review 2 -->
+              <div class="bg-white p-6 shadow-sm border border-[#DBCAB6]/40">
+                <div class="flex gap-1 mb-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#A95C3F" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#A95C3F" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#A95C3F" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#A95C3F" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#A95C3F" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                <h4 class="font-serif-playfair font-medium text-[17px] text-[#3D2B1F] mb-0.5">Camila Ferreira</h4>
+                <p class="text-[#888] text-[12px] font-light mb-4">@camilaa2ferrer</p>
+                <p class="text-[#5A433A] text-[14.5px] leading-[1.5] font-light italic">"Já fiz minha primeira venda! A técnica da resina deixa a peça parecendo uma joia cara, amei muito."</p>
+              </div>
+              <!-- Review 3 -->
+              <div class="bg-white p-6 shadow-sm border border-[#DBCAB6]/40">
+                <div class="flex gap-1 mb-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#A95C3F" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#A95C3F" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#A95C3F" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#A95C3F" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#A95C3F" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                <h4 class="font-serif-playfair font-medium text-[17px] text-[#3D2B1F] mb-0.5">Maressa Ribeiro</h4>
+                <p class="text-[#888] text-[12px] font-light mb-4">@maressibeiro</p>
+                <p class="text-[#5A433A] text-[14.5px] leading-[1.5] font-light italic">"Gente, fiquei encantada com o curso, achei que a massa ia rachar na secagem mas a Mariana ensina certinho o ponto e o tempo."</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pricing Block 2 (Otimizado para Alta Conversão) -->
+          <div class="flex flex-col mb-6 relative mt-4">
+            <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#3D2B1F] text-[#E8DECB] text-[10px] font-bold uppercase tracking-widest py-1.5 px-5 rounded-full z-10 shadow-md whitespace-nowrap">
+              Oferta Especial
+            </div>
+            <div class="bg-white border border-terracotta/40 p-8 text-center shadow-lg rounded-2xl relative pt-10">
+              <span class="text-[#3D2B1F] font-serif-playfair text-[22px] leading-tight block mb-2">Treinamento Completo</span>
+              <p class="text-[#888] text-[13px] font-light mb-1">De <span class="line-through font-medium text-[#A95C3F]/60">R$ 97,00</span> por apenas:</p>
+              
+              <div class="flex items-center justify-center gap-1 mb-2">
+                <span class="text-[#3D2B1F] font-medium text-[20px] translate-y-1">R$</span>
+                <span class="text-[#3D2B1F] font-medium text-[46px] leading-none tracking-tight">17,00</span>
+              </div>
+              <p class="text-terracotta text-[11px] font-bold uppercase tracking-widest mb-8">Pagamento Único • Acesso Vitalício</p>
+              
+              <a href="javascript:alert('Insira seu link de checkout aqui!')" class="text-center block w-full bg-terracotta hover:bg-[#8A4A32] text-white font-medium text-[16px] py-4 px-6 rounded-full btn-pulse active:scale-95 transition-transform duration-150 shadow-md tracking-wide">
+                Garantir minha vaga agora
+              </a>
+              
+              <p class="text-[11px] text-[#888] font-medium mt-4 flex items-center justify-center gap-1.5 uppercase tracking-wider">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-600"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Compra 100% Segura
+              </p>
+            </div>
+          </div>
+            
+          <div class="flex flex-col items-center gap-6 mt-10 mb-4 px-2">
+            <div class="flex items-center gap-5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 text-[#6B5145] shrink-0"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2-1 4-2 7-2 2.5 0 4.5 1 6.5 2a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+              <div>
+                <p class="font-serif-playfair font-medium text-[#3D2B1F] text-[16px] leading-tight mb-1">7 Dias de Garantia</p>
+                <p class="text-[#888] text-[11px] font-light leading-snug">Devolvemos 100% do seu valor em caso de desistência.</p>
               </div>
             </div>
           </div>
@@ -559,18 +616,15 @@
     const totalSteps = 10; // 0 to 10 mapped in DOM
 
     function goToStep(newStep) {
-      // Hide all steps
       document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
       
-      // Show targeted step
       const targetEl = document.getElementById('step-' + newStep);
       targetEl.classList.remove('hidden');
 
-      // Re-trigger CSS animations
       const animatedChild = targetEl.firstElementChild;
       if (animatedChild) {
         animatedChild.style.animation = 'none';
-        animatedChild.offsetHeight; /* trigger reflow */
+        animatedChild.offsetHeight; 
         animatedChild.style.animation = null; 
       }
 
@@ -578,7 +632,6 @@
       updateProgress();
       window.scrollTo(0, 0);
 
-      // Trigger loading sequence if step 9
       if (step === 9) {
         startLoadingSequence();
       }
@@ -597,59 +650,74 @@
       }
     }
 
-    // JS equivalent of handleAnswer logic (Single Select)
+    // Estética atualizada nos seletores do JS para combinar com o design Premium
     function handleSingle(btn, questionId, value, autoAdvance) {
       answers[questionId] = value;
       
-      // Reset siblings
       const parent = btn.parentElement;
       parent.querySelectorAll('button').forEach(b => {
-        b.classList.remove('border-[#facc15]', 'bg-[#fef9c3]', 'ring-2', 'ring-[#facc15]/30');
-        b.classList.add('border-[#fde047]', 'hover:border-[#facc15]', 'hover:bg-[#fef9c3]');
-        b.querySelector('.opt-text').classList.remove('text-black');
-        b.querySelector('.opt-text').classList.add('text-[#222222]', 'group-hover:text-black');
+        b.classList.remove('border-terracotta', 'ring-1', 'ring-terracotta', 'bg-white');
+        b.classList.add('border-[#DBCAB6]', 'hover:border-terracotta', 'bg-white/60', 'hover:bg-white');
+        
+        b.querySelector('.opt-text').classList.remove('text-[#3D2B1F]', 'font-medium');
+        b.querySelector('.opt-text').classList.add('text-[#5A433A]', 'group-hover:text-[#3D2B1F]');
+        
+        const svg = b.querySelector('svg');
+        if(svg) {
+           svg.classList.remove('text-terracotta');
+           svg.classList.add('text-[#DBCAB6]', 'group-hover:text-terracotta');
+           svg.parentElement.classList.remove('border-terracotta');
+           svg.parentElement.classList.add('border-[#DBCAB6]', 'group-hover:border-terracotta');
+        }
       });
 
-      // Highlight selected
-      btn.classList.remove('border-[#fde047]', 'hover:border-[#facc15]', 'hover:bg-[#fef9c3]');
-      btn.classList.add('border-[#facc15]', 'bg-[#fef9c3]', 'ring-2', 'ring-[#facc15]/30');
-      btn.querySelector('.opt-text').classList.add('text-black');
-      btn.querySelector('.opt-text').classList.remove('text-[#222222]', 'group-hover:text-black');
+      // Highlight selected (Terracotta Premium state)
+      btn.classList.remove('border-[#DBCAB6]', 'hover:border-terracotta', 'bg-white/60', 'hover:bg-white');
+      btn.classList.add('border-terracotta', 'ring-1', 'ring-terracotta', 'bg-white');
+      
+      btn.querySelector('.opt-text').classList.add('text-[#3D2B1F]', 'font-medium');
+      btn.querySelector('.opt-text').classList.remove('text-[#5A433A]', 'group-hover:text-[#3D2B1F]');
+
+      const svg = btn.querySelector('svg');
+      if(svg) {
+         svg.classList.remove('text-[#DBCAB6]', 'group-hover:text-terracotta');
+         svg.classList.add('text-terracotta');
+         svg.parentElement.classList.remove('border-[#DBCAB6]', 'group-hover:border-terracotta');
+         svg.parentElement.classList.add('border-terracotta');
+      }
 
       if (autoAdvance) {
-        setTimeout(() => goToStep(step + 1), 300);
+        setTimeout(() => goToStep(step + 1), 350);
       }
     }
 
-    // JS equivalent of handleAnswer logic (Multiple Select - Question 6)
     function handleMultiple(btn, questionId, value) {
       if (!answers[questionId]) answers[questionId] = [];
       const index = answers[questionId].indexOf(value);
       
       if (index > -1) {
         answers[questionId].splice(index, 1);
-        btn.classList.remove('border-[#facc15]', 'bg-[#fef9c3]', 'ring-2', 'ring-[#facc15]/30');
-        btn.classList.add('border-[#fde047]');
-        btn.querySelector('.opt-text').classList.remove('text-black');
-        btn.querySelector('.opt-text').classList.add('text-[#222222]', 'group-hover:text-black');
+        btn.classList.remove('border-terracotta', 'ring-1', 'ring-terracotta', 'bg-white');
+        btn.classList.add('border-[#DBCAB6]', 'bg-white/60');
+        btn.querySelector('.opt-text').classList.remove('text-[#3D2B1F]', 'font-medium');
+        btn.querySelector('.opt-text').classList.add('text-[#5A433A]', 'group-hover:text-[#3D2B1F]');
       } else {
         answers[questionId].push(value);
-        btn.classList.remove('border-[#fde047]', 'hover:border-[#facc15]', 'hover:bg-[#fef9c3]');
-        btn.classList.add('border-[#facc15]', 'bg-[#fef9c3]', 'ring-2', 'ring-[#facc15]/30');
-        btn.querySelector('.opt-text').classList.add('text-black');
-        btn.querySelector('.opt-text').classList.remove('text-[#222222]', 'group-hover:text-black');
+        btn.classList.remove('border-[#DBCAB6]', 'hover:border-terracotta', 'bg-white/60', 'hover:bg-white');
+        btn.classList.add('border-terracotta', 'ring-1', 'ring-terracotta', 'bg-white');
+        btn.querySelector('.opt-text').classList.add('text-[#3D2B1F]', 'font-medium');
+        btn.querySelector('.opt-text').classList.remove('text-[#5A433A]', 'group-hover:text-[#3D2B1F]');
       }
 
-      // Check validation for Continue Button
       const contBtn = document.getElementById('btn-continue-' + questionId);
       if (answers[questionId].length > 0) {
         contBtn.disabled = false;
-        contBtn.classList.remove('bg-gray-100', 'text-gray-400', 'border-gray-200', 'cursor-not-allowed', 'opacity-80');
-        contBtn.classList.add('bg-[#fcd34d]', 'hover:bg-[#fbbf24]', 'text-black', 'shadow-[0_4px_0_0_#d97706]', 'active:shadow-[0_0px_0_0_#d97706]', 'active:translate-y-[4px]');
+        contBtn.classList.remove('bg-gray-200/50', 'text-gray-400', 'border-gray-200/50', 'cursor-not-allowed', 'opacity-80');
+        contBtn.classList.add('bg-terracotta', 'text-white', 'btn-pulse', 'active:scale-95');
       } else {
         contBtn.disabled = true;
-        contBtn.classList.add('bg-gray-100', 'text-gray-400', 'border-gray-200', 'cursor-not-allowed', 'opacity-80');
-        contBtn.classList.remove('bg-[#fcd34d]', 'hover:bg-[#fbbf24]', 'text-black', 'shadow-[0_4px_0_0_#d97706]', 'active:shadow-[0_0px_0_0_#d97706]', 'active:translate-y-[4px]');
+        contBtn.classList.add('bg-gray-200/50', 'text-gray-400', 'border-gray-200/50', 'cursor-not-allowed', 'opacity-80');
+        contBtn.classList.remove('bg-terracotta', 'text-white', 'btn-pulse', 'active:scale-95');
       }
     }
 
