@@ -40,6 +40,15 @@
       from { transform: scale(0.95); opacity: 0; } 
       to { transform: scale(1); opacity: 1; } 
     }
+
+    /* Esconde a barra de rolagem mas mantém a funcionalidade do scroll lateral */
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
   </style>
 </head>
 <body class="min-h-screen bg-white font-sans text-gray-900 selection:bg-yellow-200">
@@ -103,7 +112,6 @@
             <h2 class="text-[25px] font-black text-[#111111] leading-[1.15] tracking-tight whitespace-pre-line">Qual seu nível de experiência com<br/><span class="text-[#ffda00]">Cerâmica Plástica?</span></h2>
           </div>
           <div class="space-y-4 opts-container">
-            <!-- options generated via JS later to save HTML space, but since requirement is NO visual changes and HTML is preferred, let's hardcode robustly -->
             <button onclick="handleSingle(this, 'experiencia', 'Já faço algumas peças, mas quero melhorar meus acabamentos', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
               <span class="text-3xl shrink-0">👩‍🎨</span>
               <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow">
@@ -380,6 +388,38 @@
              <div class="flex gap-3 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#16a34a" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#16a34a] shrink-0 bg-white"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p class="text-[14.5px] text-[#222222] leading-[1.4]">Método para faturar até <strong>R$ 3.000 por mês</strong> com suas peças exclusivas</p></div>
              <div class="flex gap-3 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#16a34a" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#16a34a] shrink-0 bg-white"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p class="text-[14.5px] text-[#222222] leading-[1.4]">Lista completa de <strong>fornecedores testados</strong> para comprar massa e ferragens</p></div>
           </div>
+
+          <!-- CARROSSEL EBOOK COMEÇA AQUI -->
+          <div class="mt-10 mb-12">
+            <h3 class="text-[20px] font-black text-[#111111] leading-[1.2] tracking-tight text-center mb-6 font-['Montserrat',sans-serif]">
+              Uma espiadinha por dentro do<br/>seu material <span class="text-[#eab308]">exclusivo</span>:
+            </h3>
+            
+            <div class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 scrollbar-hide -mx-5 px-5">
+              <div class="w-[85%] shrink-0 snap-center overflow-hidden rounded-xl shadow-md border border-gray-100">
+                <img src="ebook1.webp" alt="Página 1 do Ebook" class="w-full h-auto object-cover"/>
+              </div>
+              <div class="w-[85%] shrink-0 snap-center overflow-hidden rounded-xl shadow-md border border-gray-100">
+                <img src="ebook2.webp" alt="Página 2 do Ebook" class="w-full h-auto object-cover"/>
+              </div>
+              <div class="w-[85%] shrink-0 snap-center overflow-hidden rounded-xl shadow-md border border-gray-100">
+                <img src="ebook3.webp" alt="Página 3 do Ebook" class="w-full h-auto object-cover"/>
+              </div>
+              <div class="w-[85%] shrink-0 snap-center overflow-hidden rounded-xl shadow-md border border-gray-100">
+                <img src="ebook4.webp" alt="Página 4 do Ebook" class="w-full h-auto object-cover"/>
+              </div>
+              <div class="w-[85%] shrink-0 snap-center overflow-hidden rounded-xl shadow-md border border-gray-100">
+                <img src="ebook5.webp" alt="Página 5 do Ebook" class="w-full h-auto object-cover"/>
+              </div>
+            </div>
+            
+            <p class="text-center text-[12px] text-gray-400 mt-2 font-medium flex items-center justify-center gap-1.5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+              Deslize para ver as páginas
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </p>
+          </div>
+          <!-- CARROSSEL EBOOK TERMINA AQUI -->
 
           <div class="mb-10 text-center">
             <h3 class="text-[#eab308] font-black text-[18px] mb-6 font-['Montserrat',sans-serif] px-4">🎁 Ganhe BÔNUS grátis se garantir sua vaga AGORA:</h3>
