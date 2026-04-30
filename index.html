@@ -1,339 +1,637 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Cerâmica Plástica - Modelando Lucros</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        .font-montserrat { font-family: 'Montserrat', sans-serif; }
-        .animate-in { animation: fadeIn 0.5s ease-out forwards; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .progress-transition { transition: width 0.5s ease-out; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Treinamento Modelando Lucros</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800;900&display=swap');
+
+    /* Custom Animations for Tailwind (Replicando tailwindcss-animate) */
+    .animate-in { animation-duration: 300ms; animation-fill-mode: both; }
+    .duration-300 { animation-duration: 300ms; }
+    .duration-500 { animation-duration: 500ms; }
+    .duration-700 { animation-duration: 700ms; }
+    
+    .fade-in { animation-name: fadeIn; }
+    .slide-in-from-bottom-4 { animation-name: slideInFromBottom4; }
+    .slide-in-from-bottom-8 { animation-name: slideInFromBottom8; }
+    .slide-in-from-right-8 { animation-name: slideInFromRight8; }
+    .zoom-in { animation-name: zoomIn; }
+
+    @keyframes fadeIn { 
+      from { opacity: 0; } 
+      to { opacity: 1; } 
+    }
+    @keyframes slideInFromBottom4 { 
+      from { transform: translateY(1rem); opacity: 0; } 
+      to { transform: translateY(0); opacity: 1; } 
+    }
+    @keyframes slideInFromBottom8 { 
+      from { transform: translateY(2rem); opacity: 0; } 
+      to { transform: translateY(0); opacity: 1; } 
+    }
+    @keyframes slideInFromRight8 { 
+      from { transform: translateX(2rem); opacity: 0; } 
+      to { transform: translateX(0); opacity: 1; } 
+    }
+    @keyframes zoomIn { 
+      from { transform: scale(0.95); opacity: 0; } 
+      to { transform: scale(1); opacity: 1; } 
+    }
+  </style>
 </head>
-<body class="bg-gray-50 text-gray-900 selection:bg-yellow-200">
+<body class="min-h-screen bg-white font-sans text-gray-900 selection:bg-yellow-200">
 
-    <div id="app" class="min-h-screen flex justify-center">
-        <!-- Container Principal -->
-        <div class="w-full max-w-5xl bg-white relative overflow-hidden flex flex-col shadow-2xl min-h-screen">
-            
-            <!-- Barra de Progresso Superior -->
-            <div id="progress-container" class="w-[90%] max-w-2xl mx-auto mt-8 h-2 bg-[#fef08a] rounded-full relative z-10 overflow-hidden">
-                <div id="progress-bar" class="h-full bg-[#eab308] progress-transition" style="width: 10%;"></div>
-            </div>
-
-            <!-- Área de Conteúdo -->
-            <div id="content" class="flex-1 overflow-y-auto pb-16 pt-4 scroll-smooth">
-                <!-- Conteúdo injetado via JavaScript -->
-            </div>
-        </div>
+  <div class="max-w-[480px] mx-auto min-h-screen bg-white relative overflow-hidden flex flex-col">
+    
+    <!-- Progress Bar (Steps 0 to 9) -->
+    <div id="progress-container" class="w-[90%] mx-auto mt-6 h-1.5 bg-[#fef08a] rounded-full relative z-10 overflow-hidden transition-opacity duration-300">
+      <div id="progress-bar" class="h-full bg-[#eab308] transition-all duration-500 ease-out rounded-full" style="width: 10%;"></div>
     </div>
 
-    <script>
-        // Estado da Aplicação
-        const state = {
-            step: 0,
-            answers: {},
-            loadingProgress: 0,
-            questions: [
-                {
-                    id: 'experiencia',
-                    preTitle: 'Pra começar, me conta uma coisa:',
-                    titleBlack: 'Qual seu nível de experiência com\n',
-                    titleYellow: 'Cerâmica Plástica?',
-                    options: [
-                        { emoji: '👩‍🎨', text: 'Já faço algumas peças, mas quero melhorar meus acabamentos' },
-                        { emoji: '😅', text: 'Já tentei, mas tive dificuldades (massa quebrou, deu bolha)' },
-                        { emoji: '🥰', text: 'Nunca fiz, mas quero começar do zero' }
-                    ]
-                },
-                {
-                    id: 'treinamento',
-                    titleBlack: 'Esse vai ser o seu primeiro\ntreinamento com ',
-                    titleYellow: 'Modelagem?',
-                    options: [
-                        { emoji: '🥰', text: 'Nunca fiz nenhum treinamento, esse será o primeiro' },
-                        { emoji: '😅', text: 'Já fiz outro treinamento' },
-                        { emoji: '🥳', text: 'Já fiz vários treinamentos' }
-                    ]
-                },
-                {
-                    id: 'tempo',
-                    titleBlack: 'Quanto tempo você tem disponível\npara ',
-                    titleYellow: 'aprender',
-                    titleBlackSuffix: '?',
-                    options: [
-                        { emoji: '🕒', text: 'Entre 30 minutos a 1 hora' },
-                        { emoji: '🕒', text: 'Entre 3 a 4 horas' },
-                        { emoji: '🕒', text: 'Tenho muito tempo livre' }
-                    ]
-                },
-                {
-                    id: 'objetivo',
-                    titleBlack: 'O que você mais deseja conquistar\ncom a ',
-                    titleYellow: 'Cerâmica Plástica',
-                    titleBlackSuffix: '?',
-                    options: [
-                        { emoji: '💲', text: 'Minha independência financeira e viver do que eu amo' },
-                        { emoji: '🏡', text: 'Contribuir nas contas de casa e garantir mais tranquilidade pra mim e minha família' },
-                        { emoji: '💜', text: 'Ter um tempo só meu, pra relaxar e colocar minha criatividade em prática' }
-                    ]
-                },
-                {
-                    id: 'meta',
-                    titleBlack: 'Depois que você aprender as fazer as\npeças de ',
-                    titleYellow: 'Cerâmica,',
-                    titleBlackSuffix: ' qual será sua\nmeta?',
-                    options: [
-                        { emoji: '💸', text: 'Aprender como vender e lucrar com os brincos' },
-                        { emoji: '🧶', text: 'Fazer apenas como um hobby' },
-                        { emoji: '💲', text: 'Melhorar meus resultados no meu negócio atual' }
-                    ]
-                },
-                {
-                    id: 'estilo',
-                    titleBlack: 'Você prefere qual estilo de ',
-                    titleYellow: 'Brincos?',
-                    hasContinueButton: true,
-                    hideChevron: true,
-                    allowMultiple: true,
-                    options: [
-                        { emoji: '🌸', text: 'Florais e Orgânicos' },
-                        { emoji: '🔶', text: 'Geométricos e Modernos' },
-                        { emoji: '🎨', text: 'Marmorizados e com Texturas' },
-                        { emoji: '✨', text: 'Com acabamento em Resina' },
-                        { emoji: '🌿', text: 'Minimalistas e Elegantes' },
-                        { emoji: '😍', text: 'Todos os estilos' }
-                    ]
-                }
-            ]
-        };
+    <div class="flex-1 overflow-y-auto pb-12 pt-2 scroll-smooth">
 
-        const contentEl = document.getElementById('content');
-        const progressBar = document.getElementById('progress-bar');
-        const progressContainer = document.getElementById('progress-container');
+      <!-- STEP 0: INTRO -->
+      <div id="step-0" class="step-content">
+        <div class="animate-in fade-in slide-in-from-bottom-4 duration-500 font-['Inter',sans-serif]">
+          <div class="text-center px-4 pt-10 pb-6">
+            <h1 class="text-[22px] md:text-3xl font-black text-gray-900 leading-tight tracking-tight font-['Montserrat',sans-serif] uppercase">
+              A NOVA TENDÊNCIA DE 2026:<br />
+              <span class="inline-block bg-[#FFD700] text-white px-2 py-0.5 mt-1 rounded-sm">
+                CERÂMICA PLÁSTICA
+              </span>
+            </h1>
+          </div>
 
-        function updateProgress() {
-            const totalSteps = state.questions.length + 3;
-            const percentage = state.step === 0 ? 10 : Math.min(100, (state.step / totalSteps) * 100);
-            progressBar.style.width = `${percentage}%`;
+          <div class="px-6 text-center text-[#222222] space-y-5 text-[16px] leading-[1.6]">
+            <p>Me chamo <strong>Luana Oliveira</strong>, e desde 2017 vivo 100% do artesanato com <strong class="text-[#FACC15]">Cerâmica Plástica</strong>. Um tipo de modelagem que conquistou o coração (e o bolso!) de milhares de mulheres.</p>
+            <p>Criei um jeito <strong>simples</strong> e <strong>lucrativo</strong> pra você começar do zero a faturar mais de <strong class="text-[#16a34a]">R$3.000,00</strong> por mês fazendo peças lindas como <strong>brincos e acessórios</strong>, mesmo que nunca tenha feito nada parecido antes.</p>
+          </div>
+
+          <div class="mt-8 px-4">
+            <img src="intro-brincos.webp" alt="Modelos de Brincos" class="w-full aspect-[4/5] object-cover rounded-2xl border border-gray-100 shadow-sm"/>
+          </div>
+
+          <div class="px-6 mt-8 text-center text-[#222222] text-[16px] leading-[1.6] flex flex-col items-center gap-2">
+            <p>
+              <span class="text-sky-400 text-xl align-middle mr-1">💙</span> 
+              Já são mais de <strong>5 mil</strong> alunas transformando criatividade em <strong class="text-[#16a34a]">renda extra</strong> e trabalhando de casa, no seu próprio ritmo.
+            </p>
+          </div>
+
+          <div class="mt-6 px-4">
+            <img src="intro-processo.webp" alt="Processo" class="w-full aspect-square object-cover rounded-2xl border border-gray-100 shadow-sm"/>
+          </div>
+
+          <div class="px-8 mt-8 mb-10 text-center text-[#222222] text-[16px] leading-[1.6] space-y-5">
+            <p>E o melhor? Eu vou te ensinar o <strong>passo a passo</strong> pra você também viver disso. Sem precisar investir muito ou depender dos outros.</p>
+            <p>Clica no botão abaixo e responda o questionário!</p>
+            <button onclick="goToStep(1)" class="w-full bg-[#fcd34d] hover:bg-[#fbbf24] text-black font-medium text-[17px] py-4 px-6 rounded-xl shadow-[0_4px_0_0_#d97706] active:shadow-[0_0px_0_0_#d97706] active:translate-y-[4px] transition-all duration-150 mt-4">
+              Continuar!
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 1: Q1 -->
+      <div id="step-1" class="step-content hidden">
+        <div class="animate-in fade-in slide-in-from-right-8 duration-300 px-6 py-12 flex flex-col justify-center min-h-[70vh]">
+          <div class="text-center mb-10 font-['Inter',sans-serif]">
+            <h3 class="text-[17px] font-black text-[#111111] mb-0.5 tracking-tight">Pra começar, me conta uma coisa:</h3>
+            <h2 class="text-[25px] font-black text-[#111111] leading-[1.15] tracking-tight whitespace-pre-line">Qual seu nível de experiência com<br/><span class="text-[#ffda00]">Cerâmica Plástica?</span></h2>
+          </div>
+          <div class="space-y-4 opts-container">
+            <!-- options generated via JS later to save HTML space, but since requirement is NO visual changes and HTML is preferred, let's hardcode robustly -->
+            <button onclick="handleSingle(this, 'experiencia', 'Já faço algumas peças, mas quero melhorar meus acabamentos', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
+              <span class="text-3xl shrink-0">👩‍🎨</span>
+              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg>
+              </div>
+              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Já faço algumas peças, mas quero melhorar meus acabamentos</span>
+            </button>
+            <button onclick="handleSingle(this, 'experiencia', 'Já tentei, mas tive dificuldades', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
+              <span class="text-3xl shrink-0">😅</span>
+              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg>
+              </div>
+              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Já tentei, mas tive dificuldades (massa quebrou, deu bolha)</span>
+            </button>
+            <button onclick="handleSingle(this, 'experiencia', 'Nunca fiz, mas quero começar do zero', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
+              <span class="text-3xl shrink-0">🥰</span>
+              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg>
+              </div>
+              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Nunca fiz, mas quero começar do zero</span>
+            </button>
+          </div>
+          <div class="mt-8 text-center"><p class="text-[13px] text-gray-600 font-medium">Personalizamos o seu pacote de acordo com suas respostas.</p></div>
+        </div>
+      </div>
+
+      <!-- STEP 2: Q2 -->
+      <div id="step-2" class="step-content hidden">
+        <div class="animate-in fade-in slide-in-from-right-8 duration-300 px-6 py-12 flex flex-col justify-center min-h-[70vh]">
+          <div class="text-center mb-10 font-['Inter',sans-serif]">
+            <h2 class="text-[25px] font-black text-[#111111] leading-[1.15] tracking-tight whitespace-pre-line">Esse vai ser o seu primeiro<br/>treinamento com <span class="text-[#ffda00]">Modelagem?</span></h2>
+          </div>
+          <div class="space-y-4 opts-container">
+            <button onclick="handleSingle(this, 'treinamento', 'Nunca fiz', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
+              <span class="text-3xl shrink-0">🥰</span>
+              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg>
+              </div>
+              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Nunca fiz nenhum treinamento, esse será o primeiro</span>
+            </button>
+            <button onclick="handleSingle(this, 'treinamento', 'Já fiz outro', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
+              <span class="text-3xl shrink-0">😅</span>
+              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg>
+              </div>
+              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Já fiz outro treinamento</span>
+            </button>
+            <button onclick="handleSingle(this, 'treinamento', 'Já fiz vários', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
+              <span class="text-3xl shrink-0">🥳</span>
+              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg>
+              </div>
+              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Já fiz vários treinamentos</span>
+            </button>
+          </div>
+          <div class="mt-8 text-center"><p class="text-[13px] text-gray-600 font-medium">Personalizamos o seu pacote de acordo com suas respostas.</p></div>
+        </div>
+      </div>
+
+      <!-- STEP 3: Q3 -->
+      <div id="step-3" class="step-content hidden">
+        <div class="animate-in fade-in slide-in-from-right-8 duration-300 px-6 py-12 flex flex-col justify-center min-h-[70vh]">
+          <div class="text-center mb-10 font-['Inter',sans-serif]">
+            <h2 class="text-[25px] font-black text-[#111111] leading-[1.15] tracking-tight whitespace-pre-line">Quanto tempo você tem disponível<br/>para <span class="text-[#ffda00]">aprender</span>?</h2>
+          </div>
+          <div class="space-y-4 opts-container">
+            <button onclick="handleSingle(this, 'tempo', '30m', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
+              <span class="text-3xl shrink-0">🕒</span>
+              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg></div>
+              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Entre 30 minutos a 1 hora</span>
+            </button>
+            <button onclick="handleSingle(this, 'tempo', '3-4h', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
+              <span class="text-3xl shrink-0">🕒</span>
+              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg></div>
+              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Entre 3 a 4 horas</span>
+            </button>
+            <button onclick="handleSingle(this, 'tempo', 'livre', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
+              <span class="text-3xl shrink-0">🕒</span>
+              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg></div>
+              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Tenho muito tempo livre</span>
+            </button>
+          </div>
+          <div class="mt-8 text-center"><p class="text-[13px] text-gray-600 font-medium">Personalizamos o seu pacote de acordo com suas respostas.</p></div>
+        </div>
+      </div>
+
+      <!-- STEP 4: Q4 -->
+      <div id="step-4" class="step-content hidden">
+        <div class="animate-in fade-in slide-in-from-right-8 duration-300 px-6 py-12 flex flex-col justify-center min-h-[70vh]">
+          <div class="text-center mb-10 font-['Inter',sans-serif]">
+            <h2 class="text-[25px] font-black text-[#111111] leading-[1.15] tracking-tight whitespace-pre-line">O que você mais deseja conquistar<br/>com a <span class="text-[#ffda00]">Cerâmica Plástica</span>?</h2>
+          </div>
+          <div class="space-y-4 opts-container">
+            <button onclick="handleSingle(this, 'objetivo', 'independencia', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
+              <span class="text-3xl shrink-0">💲</span>
+              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg></div>
+              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Minha independência financeira e viver do que eu amo</span>
+            </button>
+            <button onclick="handleSingle(this, 'objetivo', 'contribuir', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
+              <span class="text-3xl shrink-0">🏡</span>
+              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg></div>
+              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Contribuir nas contas de casa e garantir mais tranquilidade pra mim e minha família</span>
+            </button>
+            <button onclick="handleSingle(this, 'objetivo', 'tempo', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
+              <span class="text-3xl shrink-0">💜</span>
+              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg></div>
+              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Ter um tempo só meu, pra relaxar e colocar minha criatividade em prática</span>
+            </button>
+          </div>
+          <div class="mt-8 text-center"><p class="text-[13px] text-gray-600 font-medium">Personalizamos o seu pacote de acordo com suas respostas.</p></div>
+        </div>
+      </div>
+
+      <!-- STEP 5: Q5 -->
+      <div id="step-5" class="step-content hidden">
+        <div class="animate-in fade-in slide-in-from-right-8 duration-300 px-6 py-12 flex flex-col justify-center min-h-[70vh]">
+          <div class="text-center mb-10 font-['Inter',sans-serif]">
+            <h2 class="text-[25px] font-black text-[#111111] leading-[1.15] tracking-tight whitespace-pre-line">Depois que você aprender as fazer as<br/>peças de <span class="text-[#ffda00]">Cerâmica,</span> qual será sua<br/>meta?</h2>
+          </div>
+          <div class="space-y-4 opts-container">
+            <button onclick="handleSingle(this, 'meta', 'vender', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
+              <span class="text-3xl shrink-0">💸</span>
+              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg></div>
+              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Aprender como vender e lucrar com os brincos</span>
+            </button>
+            <button onclick="handleSingle(this, 'meta', 'hobby', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
+              <span class="text-3xl shrink-0">🧶</span>
+              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg></div>
+              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Fazer apenas como um hobby</span>
+            </button>
+            <button onclick="handleSingle(this, 'meta', 'melhorar', true)" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
+              <span class="text-3xl shrink-0">💲</span>
+              <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#facc15]"><path d="m9 18 6-6-6-6"/></svg></div>
+              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Melhorar meus resultados no meu negócio atual</span>
+            </button>
+          </div>
+          <div class="mt-8 text-center"><p class="text-[13px] text-gray-600 font-medium">Personalizamos o seu pacote de acordo com suas respostas.</p></div>
+        </div>
+      </div>
+
+      <!-- STEP 6: Q6 (Multiple + Button) -->
+      <div id="step-6" class="step-content hidden">
+        <div class="animate-in fade-in slide-in-from-right-8 duration-300 px-6 py-12 flex flex-col justify-center min-h-[70vh]">
+          <div class="text-center mb-10 font-['Inter',sans-serif]">
+            <h2 class="text-[25px] font-black text-[#111111] leading-[1.15] tracking-tight whitespace-pre-line">Você prefere qual estilo de <span class="text-[#ffda00]">Brincos?</span></h2>
+          </div>
+          <div class="space-y-4 opts-container">
+            <!-- Note: hideChevron=true -->
+            <button onclick="handleMultiple(this, 'estilo', 'florais')" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
+              <span class="text-3xl shrink-0">🌸</span>
+              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Florais e Orgânicos</span>
+            </button>
+            <button onclick="handleMultiple(this, 'estilo', 'geometricos')" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
+              <span class="text-3xl shrink-0">🔶</span>
+              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Geométricos e Modernos</span>
+            </button>
+            <button onclick="handleMultiple(this, 'estilo', 'marmorizados')" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
+              <span class="text-3xl shrink-0">🎨</span>
+              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Marmorizados e com Texturas</span>
+            </button>
+            <button onclick="handleMultiple(this, 'estilo', 'resina')" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
+              <span class="text-3xl shrink-0">✨</span>
+              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Com acabamento em Resina</span>
+            </button>
+            <button onclick="handleMultiple(this, 'estilo', 'minimalistas')" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
+              <span class="text-3xl shrink-0">🌿</span>
+              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Minimalistas e Elegantes</span>
+            </button>
+            <button onclick="handleMultiple(this, 'estilo', 'todos')" class="opt-btn w-full text-left bg-[#fffdf0] border-[1.5px] border-[#fde047] hover:border-[#facc15] hover:bg-[#fef9c3] p-4 rounded-2xl shadow-[0_4px_14px_rgba(253,224,71,0.2)] transition-all duration-200 flex items-center gap-3 group active:scale-[0.98]">
+              <span class="text-3xl shrink-0">😍</span>
+              <span class="opt-text font-medium text-[15px] leading-tight text-[#222222] group-hover:text-black">Todos os estilos</span>
+            </button>
+          </div>
+          <div class="mt-8 text-center"><p class="text-[13px] text-gray-600 font-medium">Personalizamos o seu pacote de acordo com suas respostas.</p></div>
+          
+          <button id="btn-continue-estilo" onclick="goToStep(7)" disabled class="w-full font-medium text-[17px] py-4 px-6 rounded-xl transition-all duration-150 mt-6 bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed opacity-80">
+            Continuar
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 7: BRIDGE -->
+      <div id="step-7" class="step-content hidden">
+        <div class="animate-in fade-in slide-in-from-right-8 duration-300 px-6 py-10 flex flex-col justify-center font-['Inter',sans-serif]">
+          <h2 class="text-[24px] font-black text-[#111111] leading-[1.15] tracking-tight text-center mb-6 font-['Montserrat',sans-serif]">
+            Precisa de forno especial ou <span class="text-[#ffda00]">ferramentas caras?</span>
+          </h2>
+          <div class="text-[15.5px] text-[#222222] text-center leading-[1.5] space-y-4">
+            <p><strong>Não!</strong> A grande vantagem desse método é que a massa <strong>seca ao ar livre</strong>. Você não precisa de forno, nem de equipamentos complexos.</p>
+            <p>O método que eu ensino é simples. Com ferramentas básicas ou coisas que você já tem em casa, você consegue criar peças lindas com acabamento profissional na mesa da sua sala.</p>
+          </div>
+          <div class="mt-6 mb-12">
+            <img src="ferramentas.webp" alt="Ferramentas simples e secagem ao ar livre" class="w-full aspect-[4/5] object-cover rounded-2xl border border-gray-100 shadow-sm"/>
+          </div>
+          <h2 class="text-[24px] font-black text-[#111111] leading-[1.15] tracking-tight text-center mb-6 font-['Montserrat',sans-serif]">
+            O <span class="text-[#ffda00]">material</span> é caro?
+          </h2>
+          <div class="text-[15.5px] text-[#222222] text-center leading-[1.5]">
+            <p><strong>Nem um pouco!</strong> Um bloquinho de massa custa em média R$ 12,00. E com esse único bloco você consegue fazer vários pares de brincos! Você investe centavos por peça e consegue vender cada uma por <strong>R$ 35 a R$ 60</strong>.</p>
+          </div>
+          <div class="mt-6 mb-8">
+            <img src="blocos-massa.webp" alt="Blocos de massa de cerâmica plástica" class="w-full aspect-[16/9] object-cover rounded-2xl border border-gray-100 shadow-sm"/>
+          </div>
+          <button onclick="goToStep(8)" class="w-full bg-[#fcd34d] hover:bg-[#fbbf24] text-black font-medium text-[17px] py-4 px-6 rounded-xl shadow-[0_4px_0_0_#d97706] active:shadow-[0_0px_0_0_#d97706] active:translate-y-[4px] transition-all duration-150">
+            Continuar
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 8: TESTIMONIALS -->
+      <div id="step-8" class="step-content hidden">
+        <div class="animate-in fade-in slide-in-from-right-8 duration-300 px-6 py-10 flex flex-col justify-center font-['Inter',sans-serif] min-h-[80vh]">
+          <h2 class="text-[23px] font-black text-[#111111] leading-[1.2] tracking-tight text-center mb-8 font-['Montserrat',sans-serif]">
+            Olha o que minhas alunas estão<br/>dizendo sobre o treinamento<br/>
+            <span class="inline-block bg-[#FFD700] text-white px-2 py-0.5 mt-1 rounded-sm uppercase tracking-normal">Modelando Lucros!</span>
+          </h2>
+          <div class="flex gap-3 mt-2 mb-10">
+            <img src="prints-alunas.webp" alt="Print WhatsApp 1" class="w-1/2 aspect-[4/5] object-cover rounded-2xl border border-gray-100 shadow-sm"/>
+            <img src="prints-alunas2.webp" alt="Print WhatsApp 2" class="w-1/2 aspect-[4/5] object-cover rounded-2xl border border-gray-100 shadow-sm"/>
+          </div>
+          <button onclick="goToStep(9)" class="w-full bg-[#fcd34d] hover:bg-[#fbbf24] text-black font-medium text-[17px] py-4 px-6 rounded-xl shadow-[0_4px_0_0_#d97706] active:shadow-[0_0px_0_0_#d97706] active:translate-y-[4px] transition-all duration-150">
+            Quero aprender!
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 9: LOADING -->
+      <div id="step-9" class="step-content hidden">
+        <div class="animate-in fade-in zoom-in duration-500 px-6 py-16 flex flex-col justify-center min-h-[70vh] font-['Inter',sans-serif]">
+          <div class="text-center mb-12">
+            <h2 class="text-[26px] md:text-[28px] font-black text-[#111111] leading-[1.2] tracking-tight font-['Montserrat',sans-serif]">
+              Você está a poucos passos de iniciar<br/>uma <span class="text-[#facc15]">GRANDE</span> <span class="bg-[#facc15] text-white px-1.5 pb-0.5 rounded-sm inline-block">mudança</span>!
+            </h2>
+          </div>
+          <div class="w-full max-w-sm mx-auto mb-6">
+            <div class="flex justify-between items-end mb-2 px-1">
+              <span class="text-[#facc15] font-bold text-[15px]">Preparando seu treinamento</span>
+              <span id="loading-pct" class="text-[#facc15] font-bold text-[16px]">0%</span>
+            </div>
+            <div class="w-full h-3.5 bg-[#fef9c3] rounded-full overflow-hidden shadow-inner">
+              <div id="loading-fill" class="h-full bg-[#facc15] transition-all duration-75 ease-linear rounded-full" style="width: 0%;"></div>
+            </div>
+          </div>
+          <p class="text-center text-[13px] font-bold text-[#111111]">Carregando um treinamento exclusivo pra você</p>
+        </div>
+      </div>
+
+      <!-- STEP 10: PITCH -->
+      <div id="step-10" class="step-content hidden">
+        <div class="animate-in fade-in slide-in-from-bottom-8 duration-700 px-5 py-8 flex flex-col font-['Inter',sans-serif]">
+          
+          <div class="bg-[#e6f4ea] p-5 rounded-2xl text-center mb-8 border border-[#cce8d6]">
+            <h3 class="text-[#16a34a] font-black text-[19px] mb-2">Parabéns!</h3>
+            <p class="text-[#111111] font-bold text-[15px] leading-tight">Você foi qualificada para participar do<br/>treinamento MODELANDO LUCROS!</p>
+          </div>
+
+          <h2 class="text-[22px] font-black text-[#111111] leading-[1.2] tracking-tight text-center mb-8 font-['Montserrat',sans-serif]">
+            Olha tudo o que você vai aprender no<br/>treinamento <span class="bg-[#facc15] text-white px-1.5 pb-0.5 rounded-sm inline-block">Modelando Lucros</span>!
+          </h2>
+
+          <div class="space-y-4 mb-10" id="benefits-list">
+             <!-- JS will inject the checklist to save repeating HTML, or we hardcode. Let's hardcode for full zero-JS fallback visual -->
+             <div class="flex gap-3 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#16a34a" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#16a34a] shrink-0 bg-white"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p class="text-[14.5px] text-[#222222] leading-[1.4]"><strong>Acesso vitalício</strong>, assista sempre que quiser</p></div>
+             <div class="flex gap-3 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#16a34a" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#16a34a] shrink-0 bg-white"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p class="text-[14.5px] text-[#222222] leading-[1.4]"><strong>Condicionamento correto</strong>: O segredo para a massa não rachar após a secagem</p></div>
+             <div class="flex gap-3 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#16a34a" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#16a34a] shrink-0 bg-white"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p class="text-[14.5px] text-[#222222] leading-[1.4]"><strong>Criação de texturas</strong>, efeito marmorizado, listras e padrões orgânicos</p></div>
+             <div class="flex gap-3 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#16a34a" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#16a34a] shrink-0 bg-white"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p class="text-[14.5px] text-[#222222] leading-[1.4]">O tempo e a <strong>técnica EXATA de secagem natural</strong> sem deformar a peça</p></div>
+             <div class="flex gap-3 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#16a34a" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#16a34a] shrink-0 bg-white"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p class="text-[14.5px] text-[#222222] leading-[1.4]"><strong>Lixamento e polimento</strong> para um acabamento liso e impecável</p></div>
+             <div class="flex gap-3 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#16a34a" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#16a34a] shrink-0 bg-white"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p class="text-[14.5px] text-[#222222] leading-[1.4]">Aplicação de <strong>resina UV</strong> para um brilho vitrificado de joia</p></div>
+             <div class="flex gap-3 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#16a34a" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#16a34a] shrink-0 bg-white"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p class="text-[14.5px] text-[#222222] leading-[1.4]"><strong>Montagem profissional</strong> das ferragens (argolas, pinos, bases de brinco)</p></div>
+             <div class="flex gap-3 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#16a34a" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#16a34a] shrink-0 bg-white"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p class="text-[14.5px] text-[#222222] leading-[1.4]">Como calcular o preço ideal de cada peça para <strong>lucrar até 500%</strong> em cima</p></div>
+             <div class="flex gap-3 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#16a34a" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#16a34a] shrink-0 bg-white"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p class="text-[14.5px] text-[#222222] leading-[1.4]">Como <strong>vender nas redes sociais</strong> e atrair suas primeiras clientes</p></div>
+             <div class="flex gap-3 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#16a34a" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#16a34a] shrink-0 bg-white"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p class="text-[14.5px] text-[#222222] leading-[1.4]">Método para faturar até <strong>R$ 3.000 por mês</strong> com suas peças exclusivas</p></div>
+             <div class="flex gap-3 items-start"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#16a34a" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-[#16a34a] shrink-0 bg-white"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p class="text-[14.5px] text-[#222222] leading-[1.4]">Lista completa de <strong>fornecedores testados</strong> para comprar massa e ferragens</p></div>
+          </div>
+
+          <div class="mb-10 text-center">
+            <h3 class="text-[#eab308] font-black text-[18px] mb-6 font-['Montserrat',sans-serif] px-4">🎁 Ganhe BÔNUS grátis se garantir sua vaga AGORA:</h3>
+            <div class="space-y-4 text-left text-[14.5px] text-[#222222] leading-[1.5]">
+              <p><span class="bg-[#fef08a] text-yellow-800 font-bold px-1 rounded mr-1">Bônus 1:</span> Como montar seu perfil no Instagram para vender brincos.</p>
+              <p><span class="bg-[#fef08a] text-yellow-800 font-bold px-1 rounded mr-1">Bônus 2:</span> <strong>Acesso vitalício</strong> ao treinamento pra você ver quando quiser no seu ritmo.</p>
+              <p><span class="bg-[#fef08a] text-yellow-800 font-bold px-1 rounded mr-1">Bônus 3:</span> <strong>Como tirar fotos que vendem</strong> usando apenas o seu celular.</p>
+              <p><span class="bg-[#fef08a] text-yellow-800 font-bold px-1 rounded mr-1">Bônus 4:</span> <strong>Planilha de precificação</strong> automática!</p>
+            </div>
+          </div>
+
+          <div class="bg-[#ffe4e6] text-[#be123c] font-bold text-center py-3.5 rounded-xl text-[14px] shadow-sm mb-12">
+            <span class="text-[#9f1239]">Corra!</span> Falta apenas 17 vagas disponíveis
+          </div>
+
+          <h2 class="text-[22px] font-black text-[#111111] leading-[1.2] tracking-tight text-center mb-6 font-['Montserrat',sans-serif]">Alguns dos <span class="text-[#eab308]">vários modelos</span> que você<br/>vai aprender comigo:</h2>
+          
+          <div class="grid grid-cols-2 gap-3 mb-4">
+            <img src="imagem1.webp" alt="Modelo 1" class="w-full aspect-square object-cover rounded-2xl border border-gray-100 shadow-sm"/>
+            <img src="imagem2.webp" alt="Modelo 2" class="w-full aspect-square object-cover rounded-2xl border border-gray-100 shadow-sm"/>
+            <img src="imagem3.webp" alt="Modelo 3" class="w-full aspect-square object-cover rounded-2xl border border-gray-100 shadow-sm"/>
+            <img src="imagem4.webp" alt="Modelo 4" class="w-full aspect-square object-cover rounded-2xl border border-gray-100 shadow-sm"/>
+            <img src="imagem5.webp" alt="Modelo 5" class="col-span-2 w-full aspect-[2/1] object-cover rounded-2xl border border-gray-100 shadow-sm"/>
+          </div>
+
+          <!-- Pricing Block 1 -->
+          <div class="flex flex-col mt-8 mb-6">
+            <div class="bg-[#d1f5e0] rounded-t-xl rounded-b-sm p-5 flex items-center justify-between border-t border-x border-[#bbf7d0]">
+              <span class="text-[#16a34a] font-black text-[17px] w-1/2 leading-tight">Curso Modelando Lucros</span>
+              <div class="text-right">
+                <p class="text-green-600/80 text-[10px] font-bold mb-0.5 line-through">DE R$ 97,00</p>
+                <p class="text-[#16a34a] font-black text-[26px] leading-none mb-1">R$ 37,00</p>
+                <p class="text-[#16a34a] text-[11px] font-bold">Pagamento Único</p>
+              </div>
+            </div>
+            <a href="javascript:alert('Insira seu link de checkout aqui!')" class="text-center w-full bg-[#facc15] hover:bg-[#eab308] text-[#111111] font-bold text-[17px] py-5 px-6 rounded-b-xl shadow-[0_4px_0_0_#ca8a04] active:shadow-[0_0px_0_0_#ca8a04] active:translate-y-[4px] transition-all duration-150 z-10">
+              Clique aqui e garanta o treinamento!
+            </a>
+          </div>
+
+          <img src="foto-autora.webp" alt="Luana Oliveira" class="w-full aspect-square object-cover rounded-2xl border border-gray-100 shadow-sm mb-8 mt-2"/>
+
+          <h2 class="text-[20px] font-black text-[#111111] leading-[1.2] tracking-tight text-center mb-6 font-['Montserrat',sans-serif]">Luana Oliveira</h2>
+          <div class="text-[15px] text-[#222222] text-center leading-[1.5] space-y-4 mb-12">
+            <p>Criadora do treinamento <strong>Modelando Lucros</strong> e apaixonada por modelagem desde 2017.</p>
+            <p>Minha história começou de forma simples: eu precisava de uma renda extra que não exigisse maquinário pesado ou um ateliê fora de casa. Foi aí que conheci esse material incrível, que permite criar peças profissionais secando naturalmente, sem precisar de forno ou grandes investimentos.</p>
+            <p>Me especializei em técnicas de marmorizado, lixamento, aplicação de resina e estratégias de vendas, e hoje vivo daquilo que amo: criar <strong>brincos e acessórios femininos</strong> que são verdadeiras joias artesanais.</p>
+            <p>Hoje ensino mais de 5 mil alunas a terem sua independência financeira. Quero te mostrar que você também pode transformar sua paixão em <strong>uma fonte de renda lucrativa!</strong></p>
+          </div>
+
+          <h2 class="text-[22px] font-black text-[#111111] leading-[1.2] tracking-tight text-center mb-8 font-['Montserrat',sans-serif]">Veja o que as alunas da turma 1 estão<br/>falando do treinamento:</h2>
+          
+          <div class="space-y-4 mb-8">
+            <!-- Review 1 -->
+            <div class="border border-gray-200 rounded-2xl p-5 shadow-sm bg-white">
+              <div class="flex gap-1 mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+              <h4 class="font-bold text-[#eab308] text-[16px] leading-tight">Maria Garcia</h4>
+              <p class="text-gray-500 text-[12px] mb-3">@mariaagnc1</p>
+              <p class="text-[#222222] text-[14.5px] leading-[1.4]">Eu não tinha dom nenhum, mas com o método consegui fazer meu primeiro par de brincos no primeiro dia!</p>
+            </div>
+            <!-- Review 2 -->
+            <div class="border border-gray-200 rounded-2xl p-5 shadow-sm bg-white">
+              <div class="flex gap-1 mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+              <h4 class="font-bold text-[#eab308] text-[16px] leading-tight">Camila Ferreira</h4>
+              <p class="text-gray-500 text-[12px] mb-3">@camilaa2ferrer</p>
+              <p class="text-[#222222] text-[14.5px] leading-[1.4]">Já fiz minha primeira venda! A técnica da resina deixa a peça parecendo uma joia cara, amei muito.</p>
+            </div>
+            <!-- Review 3 -->
+            <div class="border border-gray-200 rounded-2xl p-5 shadow-sm bg-white">
+              <div class="flex gap-1 mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#eab308" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[#eab308]"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+              <h4 class="font-bold text-[#eab308] text-[16px] leading-tight">Maressa Ribeiro</h4>
+              <p class="text-gray-500 text-[12px] mb-3">@maressibeiro</p>
+              <p class="text-[#222222] text-[14.5px] leading-[1.4]">Gente, fiquei encantada com o curso, achei que a massa ia rachar na secagem mas a Luana ensina certinho o ponto e o tempo.</p>
+            </div>
+          </div>
+
+          <!-- Pricing Block 2 with Badges -->
+          <div class="flex flex-col mt-8 mb-6">
+            <div class="bg-[#d1f5e0] rounded-t-xl rounded-b-sm p-5 flex items-center justify-between border-t border-x border-[#bbf7d0]">
+              <span class="text-[#16a34a] font-black text-[17px] w-1/2 leading-tight">Curso Modelando Lucros</span>
+              <div class="text-right">
+                <p class="text-green-600/80 text-[10px] font-bold mb-0.5 line-through">DE R$ 97,00</p>
+                <p class="text-[#16a34a] font-black text-[26px] leading-none mb-1">R$ 37,00</p>
+                <p class="text-[#16a34a] text-[11px] font-bold">Pagamento Único</p>
+              </div>
+            </div>
+            <a href="javascript:alert('Insira seu link de checkout aqui!')" class="text-center w-full bg-[#facc15] hover:bg-[#eab308] text-[#111111] font-bold text-[17px] py-5 px-6 rounded-b-xl shadow-[0_4px_0_0_#ca8a04] active:shadow-[0_0px_0_0_#ca8a04] active:translate-y-[4px] transition-all duration-150 z-10">
+              Clique aqui e garanta o treinamento!
+            </a>
             
-            if (state.step >= state.questions.length + 3) {
-                progressContainer.style.opacity = '0';
-            } else {
-                progressContainer.style.opacity = '1';
-            }
-        }
-
-        function setStep(newStep) {
-            state.step = newStep;
-            render();
-            updateProgress();
-            window.scrollTo(0, 0);
-        }
-
-        function handleAnswer(questionId, answerText, autoAdvance, allowMultiple) {
-            if (allowMultiple) {
-                if (!state.answers[questionId]) state.answers[questionId] = [];
-                const idx = state.answers[questionId].indexOf(answerText);
-                if (idx > -1) {
-                    state.answers[questionId].splice(idx, 1);
-                } else {
-                    state.answers[questionId].push(answerText);
-                }
-                render();
-            } else {
-                state.answers[questionId] = answerText;
-                render();
-                if (autoAdvance) {
-                    setTimeout(() => setStep(state.step + 1), 300);
-                }
-            }
-        }
-
-        function render() {
-            if (state.step === 0) renderIntro();
-            else if (state.step <= state.questions.length) renderQuestion();
-            else if (state.step === state.questions.length + 1) renderBridge();
-            else if (state.step === state.questions.length + 2) renderTestimonials();
-            else if (state.step === state.questions.length + 3) renderLoading();
-            else renderPitch();
-            
-            lucide.createIcons();
-        }
-
-        function renderIntro() {
-            contentEl.innerHTML = `
-                <div class="animate-in max-w-4xl mx-auto w-full">
-                    <div class="text-center px-4 pt-10 pb-6 md:pt-16 md:pb-10">
-                        <h1 class="text-[24px] md:text-[40px] font-black text-gray-900 leading-tight tracking-tight font-montserrat uppercase">
-                            A NOVA TENDÊNCIA DE 2026:<br />
-                            <span class="inline-block bg-[#FFD700] text-white px-3 py-1 mt-2 rounded-sm md:mt-4">CERÂMICA PLÁSTICA</span>
-                        </h1>
-                    </div>
-                    <div class="max-w-2xl mx-auto px-6 text-center text-[#222222] space-y-5 text-[16px] md:text-[18px] leading-[1.6]">
-                        <p>Me chamo <strong>Luana Oliveira</strong>, e desde 2017 vivo 100% do artesanato com <strong class="text-[#FACC15]">Cerâmica Plástica</strong>.</p>
-                        <p>Criei um jeito <strong>simples</strong> e <strong>lucrativo</strong> pra você começar do zero a faturar mais de <strong class="text-[#16a34a]">R$3.000,00</strong> por mês fazendo peças lindas como <strong>brincos e acessórios</strong>.</p>
-                    </div>
-                    <div class="max-w-md mx-auto mt-10 px-4 md:max-w-lg">
-                        <img src="/images/intro-brincos.webp" alt="[Imagem de Brincos]" class="w-full aspect-[4/5] object-cover rounded-2xl border border-gray-100 shadow-md">
-                    </div>
-                    <div class="max-w-md mx-auto mt-8 px-4 md:max-w-lg">
-                        <img src="/images/intro-processo.webp" alt="[Imagem de Processo]" class="w-full aspect-square object-cover rounded-2xl border border-gray-100 shadow-md">
-                    </div>
-                    <div class="max-w-2xl mx-auto px-6 mt-12 mb-16 text-center">
-                        <button onclick="setStep(1)" class="w-full max-w-sm bg-[#fcd34d] hover:bg-[#fbbf24] text-black font-medium text-[18px] md:text-[20px] py-4 px-6 rounded-xl shadow-[0_4px_0_0_#d97706] active:translate-y-[4px] active:shadow-none transition-all">
-                            Continuar!
-                        </button>
-                    </div>
+            <div class="flex flex-col items-center gap-5 mt-8 mb-2">
+              <div class="flex items-center gap-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-14 h-14 text-[#eab308] shrink-0"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2-1 4-2 7-2 2.5 0 4.5 1 6.5 2a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+                <div>
+                  <p class="font-black text-[#111111] text-[15px] leading-tight">7 DIAS DE GARANTIA</p>
+                  <p class="font-black text-[#111111] text-[15px] leading-tight mb-1">TESTE SEM MEDO</p>
+                  <p class="text-gray-500 text-[9px] font-bold">DEVOLVEMOS O VALOR NO PIX OU CARTÃO DE CRÉDITO.</p>
                 </div>
-            `;
+              </div>
+              <div class="flex items-center gap-2 text-gray-400 text-xs font-bold mt-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-green-600"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <span class="text-green-600 text-sm tracking-wide">COMPRA 100% SEGURA</span>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    let step = 0;
+    let answers = {};
+    const totalSteps = 10; // 0 to 10 mapped in DOM
+
+    function goToStep(newStep) {
+      // Hide all steps
+      document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
+      
+      // Show targeted step
+      const targetEl = document.getElementById('step-' + newStep);
+      targetEl.classList.remove('hidden');
+
+      // Re-trigger CSS animations
+      const animatedChild = targetEl.firstElementChild;
+      if (animatedChild) {
+        animatedChild.style.animation = 'none';
+        animatedChild.offsetHeight; /* trigger reflow */
+        animatedChild.style.animation = null; 
+      }
+
+      step = newStep;
+      updateProgress();
+      window.scrollTo(0, 0);
+
+      // Trigger loading sequence if step 9
+      if (step === 9) {
+        startLoadingSequence();
+      }
+    }
+
+    function updateProgress() {
+      const pContainer = document.getElementById('progress-container');
+      const pBar = document.getElementById('progress-bar');
+      
+      if (step >= 9) {
+        pContainer.style.opacity = '0';
+        setTimeout(() => pContainer.style.display = 'none', 300);
+      } else {
+        const progress = step === 0 ? 10 : Math.min(100, (step / 9) * 100);
+        pBar.style.width = progress + '%';
+      }
+    }
+
+    // JS equivalent of handleAnswer logic (Single Select)
+    function handleSingle(btn, questionId, value, autoAdvance) {
+      answers[questionId] = value;
+      
+      // Reset siblings
+      const parent = btn.parentElement;
+      parent.querySelectorAll('button').forEach(b => {
+        b.classList.remove('border-[#facc15]', 'bg-[#fef9c3]', 'ring-2', 'ring-[#facc15]/30');
+        b.classList.add('border-[#fde047]', 'hover:border-[#facc15]', 'hover:bg-[#fef9c3]');
+        b.querySelector('.opt-text').classList.remove('text-black');
+        b.querySelector('.opt-text').classList.add('text-[#222222]', 'group-hover:text-black');
+      });
+
+      // Highlight selected
+      btn.classList.remove('border-[#fde047]', 'hover:border-[#facc15]', 'hover:bg-[#fef9c3]');
+      btn.classList.add('border-[#facc15]', 'bg-[#fef9c3]', 'ring-2', 'ring-[#facc15]/30');
+      btn.querySelector('.opt-text').classList.add('text-black');
+      btn.querySelector('.opt-text').classList.remove('text-[#222222]', 'group-hover:text-black');
+
+      if (autoAdvance) {
+        setTimeout(() => goToStep(step + 1), 300);
+      }
+    }
+
+    // JS equivalent of handleAnswer logic (Multiple Select - Question 6)
+    function handleMultiple(btn, questionId, value) {
+      if (!answers[questionId]) answers[questionId] = [];
+      const index = answers[questionId].indexOf(value);
+      
+      if (index > -1) {
+        answers[questionId].splice(index, 1);
+        btn.classList.remove('border-[#facc15]', 'bg-[#fef9c3]', 'ring-2', 'ring-[#facc15]/30');
+        btn.classList.add('border-[#fde047]');
+        btn.querySelector('.opt-text').classList.remove('text-black');
+        btn.querySelector('.opt-text').classList.add('text-[#222222]', 'group-hover:text-black');
+      } else {
+        answers[questionId].push(value);
+        btn.classList.remove('border-[#fde047]', 'hover:border-[#facc15]', 'hover:bg-[#fef9c3]');
+        btn.classList.add('border-[#facc15]', 'bg-[#fef9c3]', 'ring-2', 'ring-[#facc15]/30');
+        btn.querySelector('.opt-text').classList.add('text-black');
+        btn.querySelector('.opt-text').classList.remove('text-[#222222]', 'group-hover:text-black');
+      }
+
+      // Check validation for Continue Button
+      const contBtn = document.getElementById('btn-continue-' + questionId);
+      if (answers[questionId].length > 0) {
+        contBtn.disabled = false;
+        contBtn.classList.remove('bg-gray-100', 'text-gray-400', 'border-gray-200', 'cursor-not-allowed', 'opacity-80');
+        contBtn.classList.add('bg-[#fcd34d]', 'hover:bg-[#fbbf24]', 'text-black', 'shadow-[0_4px_0_0_#d97706]', 'active:shadow-[0_0px_0_0_#d97706]', 'active:translate-y-[4px]');
+      } else {
+        contBtn.disabled = true;
+        contBtn.classList.add('bg-gray-100', 'text-gray-400', 'border-gray-200', 'cursor-not-allowed', 'opacity-80');
+        contBtn.classList.remove('bg-[#fcd34d]', 'hover:bg-[#fbbf24]', 'text-black', 'shadow-[0_4px_0_0_#d97706]', 'active:shadow-[0_0px_0_0_#d97706]', 'active:translate-y-[4px]');
+      }
+    }
+
+    function startLoadingSequence() {
+      const duration = 4000;
+      const interval = 40;
+      const totalTicks = duration / interval;
+      let currentTick = 0;
+
+      const fillEl = document.getElementById('loading-fill');
+      const textEl = document.getElementById('loading-pct');
+
+      const timer = setInterval(() => {
+        currentTick++;
+        const newProgress = Math.min(100, Math.floor((currentTick / totalTicks) * 100));
+        
+        fillEl.style.width = newProgress + '%';
+        textEl.innerText = newProgress + '%';
+
+        if (currentTick >= totalTicks) {
+          clearInterval(timer);
+          setTimeout(() => {
+            goToStep(10);
+          }, 300);
         }
-
-        function renderQuestion() {
-            const q = state.questions[state.step - 1];
-            const isMultiple = q.allowMultiple;
-            const currentAnswer = state.answers[q.id] || (isMultiple ? [] : '');
-
-            let optionsHtml = q.options.map(opt => {
-                const isSelected = isMultiple ? currentAnswer.includes(opt.text) : currentAnswer === opt.text;
-                return `
-                    <button onclick="handleAnswer('${q.id}', '${opt.text}', ${!q.hasContinueButton}, ${isMultiple})" 
-                        class="w-full text-left bg-[#fffdf0] border-[1.5px] p-4 rounded-2xl flex items-center gap-4 transition-all ${isSelected ? 'border-[#facc15] bg-[#fef9c3]' : 'border-[#fde047]'}">
-                        <span class="text-3xl shrink-0">${opt.emoji}</span>
-                        <span class="font-medium text-[15px]">${opt.text}</span>
-                    </button>
-                `;
-            }).join('');
-
-            contentEl.innerHTML = `
-                <div class="max-w-3xl mx-auto w-full animate-in px-6 py-12 md:py-20 flex flex-col justify-center min-h-[70vh]">
-                    <div class="text-center mb-10 md:mb-14">
-                        <h2 class="text-[25px] md:text-[36px] font-black text-[#111111] leading-[1.2] tracking-tight whitespace-pre-line font-montserrat">
-                            ${q.titleBlack}<span class="text-[#ffda00]">${q.titleYellow}</span>
-                        </h2>
-                    </div>
-                    <div class="max-w-xl mx-auto w-full space-y-4">${optionsHtml}</div>
-                    ${q.hasContinueButton ? `
-                        <div class="max-w-sm mx-auto w-full mt-8">
-                            <button onclick="if(state.answers['${q.id}']?.length > 0) setStep(state.step + 1)" class="w-full bg-[#fcd34d] text-black font-medium py-4 rounded-xl shadow-[0_4px_0_0_#d97706] active:translate-y-[4px] active:shadow-none transition-all">Continuar</button>
-                        </div>
-                    ` : ''}
-                </div>
-            `;
-        }
-
-        function renderBridge() {
-            contentEl.innerHTML = `
-                <div class="max-w-3xl mx-auto w-full animate-in px-6 py-12 md:py-20 flex flex-col justify-center">
-                    <h2 class="text-[24px] md:text-[36px] font-black text-center mb-8 font-montserrat">
-                        Precisa de forno especial ou <span class="text-[#ffda00]">ferramentas caras?</span>
-                    </h2>
-                    <div class="max-w-md mx-auto w-full mb-10">
-                        <img src="/images/ferramentas.webp" alt="[Imagem de Ferramentas]" class="w-full aspect-[4/5] object-cover rounded-2xl shadow-md">
-                    </div>
-                    <button onclick="setStep(state.step + 1)" class="max-w-sm mx-auto w-full bg-[#fcd34d] text-black font-medium py-4 rounded-xl shadow-[0_4px_0_0_#d97706] active:translate-y-[4px] active:shadow-none transition-all">Continuar</button>
-                </div>
-            `;
-        }
-
-        function renderTestimonials() {
-            contentEl.innerHTML = `
-                <div class="max-w-4xl mx-auto w-full animate-in px-6 py-12 md:py-20 flex flex-col justify-center">
-                    <h2 class="text-[23px] md:text-[38px] font-black text-center mb-10 font-montserrat">
-                        Olha o que minhas alunas estão<br/>dizendo sobre o treinamento<br/>
-                        <span class="inline-block bg-[#FFD700] text-white px-3 py-1 mt-2 rounded-sm uppercase">Modelando Lucros!</span>
-                    </h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto w-full mb-14">
-                        <img src="/images/prints-alunas.webp" alt="[Imagem de Print 1]" class="w-full object-cover rounded-2xl shadow-md border border-gray-100">
-                        <img src="/images/prints-alunas2.webp" alt="[Imagem de Print 2]" class="w-full object-cover rounded-2xl shadow-md border border-gray-100">
-                    </div>
-                    <button onclick="setStep(state.step + 1)" class="max-w-sm mx-auto w-full bg-[#fcd34d] text-black font-medium py-4 rounded-xl shadow-[0_4px_0_0_#d97706] active:translate-y-[4px] active:shadow-none transition-all">Quero aprender!</button>
-                </div>
-            `;
-        }
-
-        function renderLoading() {
-            contentEl.innerHTML = `
-                <div class="max-w-3xl mx-auto w-full animate-in px-6 py-16 flex flex-col justify-center min-h-[70vh]">
-                    <h2 class="text-[26px] md:text-[42px] font-black text-center mb-14 font-montserrat">
-                        Você está a poucos passos de iniciar<br/>uma <span class="text-[#facc15]">GRANDE</span> <span class="bg-[#facc15] text-white px-2 rounded-sm inline-block">mudança</span>!
-                    </h2>
-                    <div class="w-full max-w-md mx-auto mb-8">
-                        <div class="flex justify-between mb-3">
-                            <span class="text-[#facc15] font-bold text-[18px]">Preparando seu treinamento</span>
-                            <span id="loading-text" class="text-[#facc15] font-black text-[20px]">0%</span>
-                        </div>
-                        <div class="w-full h-4 bg-[#fef9c3] rounded-full overflow-hidden">
-                            <div id="loading-bar" class="h-full bg-[#facc15] transition-all duration-75 ease-linear" style="width: 0%;"></div>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            let progress = 0;
-            const bar = document.getElementById('loading-bar');
-            const text = document.getElementById('loading-text');
-            const interval = setInterval(() => {
-                progress += 2;
-                if (bar) bar.style.width = progress + '%';
-                if (text) text.innerText = progress + '%';
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => setStep(state.step + 1), 500);
-                }
-            }, 80);
-        }
-
-        function renderPitch() {
-            const pricing = `
-                <div class="flex flex-col mt-10 mb-8 max-w-lg mx-auto w-full">
-                    <div class="bg-[#d1f5e0] rounded-t-xl p-6 flex items-center justify-between border-t border-x border-[#bbf7d0]">
-                        <span class="text-[#16a34a] font-black text-[22px]">Curso Modelando Lucros</span>
-                        <div class="text-right">
-                            <p class="text-[#16a34a] font-black text-[40px] leading-none">R$ 37,00</p>
-                        </div>
-                    </div>
-                    <button onclick="window.location.href='#'" class="w-full bg-[#fcd34d] text-[#111111] font-black text-[22px] py-6 rounded-b-xl shadow-[0_5px_0_0_#ca8a04] uppercase">Quero garantir minha vaga!</button>
-                </div>
-            `;
-
-            contentEl.innerHTML = `
-                <div class="max-w-4xl mx-auto w-full animate-in px-6 py-12 md:py-20 flex flex-col">
-                    <h2 class="text-[24px] md:text-[36px] font-black text-center mb-10 font-montserrat">
-                        Alguns dos <span class="text-[#eab308]">vários modelos</span> que você vai aprender comigo:
-                    </h2>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-4xl mx-auto w-full mb-10">
-                        <img src="/images/imagem1.webp" class="w-full aspect-square object-cover rounded-xl shadow-sm border">
-                        <img src="/images/imagem2.webp" class="w-full aspect-square object-cover rounded-xl shadow-sm border">
-                        <img src="/images/imagem3.webp" class="w-full aspect-square object-cover rounded-xl shadow-sm border">
-                        <img src="/images/imagem4.webp" class="w-full aspect-square object-cover rounded-xl shadow-sm border">
-                        <div class="col-span-2 md:col-span-1">
-                            <img src="/images/imagem5.webp" class="w-full aspect-square object-cover rounded-xl shadow-sm border">
-                        </div>
-                    </div>
-                    ${pricing}
-                    <div class="max-w-md mx-auto w-full mt-10 mb-10">
-                        <img src="/images/foto-autora.webp" class="w-full aspect-square object-cover rounded-2xl shadow-md">
-                    </div>
-                    <div class="text-center max-w-2xl mx-auto mb-10">
-                        <h2 class="text-2xl font-black mb-4 font-montserrat">Luana Oliveira</h2>
-                        <p class="text-gray-600 leading-relaxed">Criadora do treinamento Modelando Lucros. Minha missão é ajudar mulheres a conquistarem independência através da arte.</p>
-                    </div>
-                    ${pricing}
-                </div>
-            `;
-        }
-
-        // Início
-        render();
-    </script>
+      }, interval);
+    }
+  </script>
 </body>
 </html>
