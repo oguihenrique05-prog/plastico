@@ -86,7 +86,7 @@
   var QUIZ_ID = "bri2";
   var TOTAL_STEPS = 11;
   var START_SEL = "#btn-iniciar-quiz";
-  var FINAL_CTA_SEL = "#btn-checkout-final";
+  var FINAL_CTA_SEL = "#quiz-cta-final";
   var prefix = ["https://lastlink.com","https://kirvano.com","https://pay.kirvano.com","https://checkout.kirvano.com","pay.yampi.com.br","https://pay.cakto.com.br","pay.cakto.com.br"];
   var TRACK_URL = API_BASE + "/api/track";
   var QUIZ_TRACK_URL = API_BASE + "/api/quiz/track";
@@ -321,9 +321,9 @@
     }
     if (FINAL_CTA_SEL) {
       try {
-        var cta = document.querySelector(FINAL_CTA_SEL);
-        if (cta) {
-          cta.addEventListener("click", function () {
+        var ctaNodes = document.querySelectorAll(FINAL_CTA_SEL);
+        for (var i = 0; i < ctaNodes.length; i++) {
+          ctaNodes[i].addEventListener("click", function () {
             fireQuizOnce("cta", "quiz_cta_clicked", null);
             fireQuizOnce("finished", "quiz_finished", null);
           }, true);
@@ -797,7 +797,7 @@
               </div>
               <p class="text-terracotta text-[11px] font-bold uppercase tracking-widest mb-8">Pagamento Único • Acesso Vitalício</p>
               
-              <a id="btn-checkout-final" href="https://pay.cakto.com.br/uocwrav_827504" class="text-center block w-full bg-terracotta hover:bg-[#8A4A32] text-white font-medium text-[16px] py-4 px-6 rounded-full btn-pulse active:scale-95 transition-transform duration-150 shadow-md tracking-wide">
+              <a id="quiz-cta-final" href="https://pay.cakto.com.br/uocwrav_827504" class="text-center block w-full bg-terracotta hover:bg-[#8A4A32] text-white font-medium text-[16px] py-4 px-6 rounded-full btn-pulse active:scale-95 transition-transform duration-150 shadow-md tracking-wide">
                 Garantir minha vaga agora
               </a>
               
@@ -881,7 +881,7 @@
               </div>
               <p class="text-terracotta text-[11px] font-bold uppercase tracking-widest mb-8">Pagamento Único • Acesso Vitalício</p>
               
-              <a id="btn-checkout-final" href="https://pay.cakto.com.br/uocwrav_827504" class="text-center block w-full bg-terracotta hover:bg-[#8A4A32] text-white font-medium text-[16px] py-4 px-6 rounded-full btn-pulse active:scale-95 transition-transform duration-150 shadow-md tracking-wide">
+              <a id="quiz-cta-final" href="https://pay.cakto.com.br/uocwrav_827504" class="text-center block w-full bg-terracotta hover:bg-[#8A4A32] text-white font-medium text-[16px] py-4 px-6 rounded-full btn-pulse active:scale-95 transition-transform duration-150 shadow-md tracking-wide">
                 Garantir minha vaga agora
               </a>
               
